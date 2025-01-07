@@ -3,6 +3,7 @@ import { A, Match, Switch, useState } from "vaderjs";
 import Nav from "../../src/Components/nav";
 import Cart from "../../src/Sdk";
 import ItemAdded from "../../src/Components/ItemAdded";
+import SharedComponent from "../../src/Components/SharedComponent";
 import api from "../../src/api";
 export default function () {  
     const cart = new Cart()
@@ -22,6 +23,7 @@ export default function () {
     const [selectedSize, setSelectedSize] = useState(null) 
      
 
+    console.log(selectedSize)
     const sizes = [
         'XS',
         'S',
@@ -30,8 +32,7 @@ export default function () {
         'XL',
     ]
  
-    function isOutofStock() {
-        // if all sizes are out of stock return true
+    function isOutofStock() { 
         return product.stock.every((stock) => stock.quantity === 0)
     }
 
@@ -61,15 +62,8 @@ export default function () {
         </button>
     ))
     return (
-        <html>
-            <head>
-                <title>Comfy</title>
-                <meta name="description" content="Comfy - One of One" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            </head>
-            <body>
-                <Nav />
-                <div className="mx-auto max-w-7xl px-4 py-8">
+         <SharedComponent title="Comfy - Product">
+             <div className="mx-auto max-w-7xl px-4 py-8">
                     <div className="grid gap-8 md:grid-cols-2">
                         {/* Product Images */}
                         <div className="relative">
@@ -123,8 +117,10 @@ export default function () {
                                         loader ?   <div>Loading...</div> : product.sizes.map((size) => (  
                                             <button
                                                 key={size}
-                                                onClick={() => setSelectedSize(size)}
-                                                disabled={product.stock.find((stock) => stock.size.toLowerCase() === size.toLowerCase())?.quantity === 0}
+                                                onClick={() => {
+                                                    if (product.stock.find((stock) => stock.size.toLowerCase() === size.toLowerCase())?.quantity === 0) return
+                                                    setSelectedSize(size)
+                                                }} 
                                                 className={`rounded-full   px-6 py-4 ${
                                                     error && error === 'size' ?  'border border-red-500' :  selectedSize === size ? 'border-black border' : 'hover:border-black border border-gray-300'
                                                     }
@@ -143,16 +139,18 @@ export default function () {
 
                             {/* Add to Bag & Favorite */}
                             <div className="flex flex-col gap-4">
-                                <button className="w-full rounded-full bg-black px-6 py-4 text-white hover:bg-gray-800"
-                                disabled={isOutofStock()}
-                                onClick={() => {
-                                    
+                                <button className="w-full rounded-full bg-black px-6 py-4 text-white hover:bg-gray-800" 
+                                onClick={() => { 
+                                    if (isOutofStock()) { 
+                                        return
+                                    }
                                     if (!selectedSize) {
                                         setError('size')
                                         setTimeout(() => setError(null), 2000)
                                         return
                                     }
                                     cart.addItem({ ...product, size: selectedSize })
+                                    console.log(cart.items)
                                     document.getElementById('item-added').showModal()
                                 }}
                                 >
@@ -189,8 +187,7 @@ export default function () {
                     </div>
                 </div>
                 <ItemAdded />
-            </body>
-        </html>
+            </SharedComponent>
 
     )
 }
