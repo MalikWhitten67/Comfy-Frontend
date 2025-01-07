@@ -1,0 +1,13 @@
+{
+    "shirts":[
+        {
+            "id":1,
+            "name":"Comfy Rev 1 - Acid T",
+            "price":45,
+            "material":"cotton",
+            "image":"/public/Products/shirts/comfy_v1.jpeg",
+            "t style":"acid wash",
+            "category":"T-shirts"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "rewrites": [
+        {
+            "source": "/auth/login",
+            "destination": "/auth/login/index.html"
+        },
+        {
+            "source": "/auth/register",
+            "destination": "/auth/register/index.html"
+        },
+        {
+            "source": "/cart",
+            "destination": "/cart/index.html"
+        },
+        {
+            "source": "/favorites",
+            "destination": "/favorites/index.html"
+        },
+        {
+            "source": "/member/settings",
+            "destination": "/member/settings/index.html"
+        },
+        {
+            "source": "/checkout/:id",
+            "destination": "/checkout/index.html"
+        },
+        {
+            "source": "/products/:id",
+            "destination": "/products/index.html"
+        }
+    ]
+}
