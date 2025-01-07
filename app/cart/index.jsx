@@ -29,6 +29,9 @@ export default function (){
     var tax = 0.07;
 
     const createOrder =  async () => {
+      if(api.authStore.isValid === false){
+        window.location.href = '/auth/login'
+      }
       const order = {
         products: items,
         subtotal: subtotal,
