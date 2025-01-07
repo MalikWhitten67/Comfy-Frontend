@@ -49,7 +49,7 @@ export default function () {
           <div className="mb-6 flex gap-4">
             <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md bg-gray-100">
               <img
-                src={product.image}
+                src={product.mainImage}
                 alt={product.name}
                 className="h-full w-full object-cover"
               />
