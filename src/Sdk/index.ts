@@ -6,10 +6,7 @@ class Cart {
     items: any;
     favorites: any;
 
-    constructor() {
-        console.log("Cart constructor");
-
-        // Initialize global variables
+    constructor() { 
         if (!window.events) window.events = {};
         if(!window.items)
             window.items =  globalThis.localStorage ? JSON.parse(globalThis.localStorage.getItem('cart')) || [] : [];
