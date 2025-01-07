@@ -7,7 +7,7 @@ const products = [
     name: "Comfy Rev 1 Acid Tee",
     price: 45,
     category: "Tshirts",
-    image: "/public/Products/shirts/comfy_V1.jpeg",
+    image: "/public/Products/shirts/comfy_v1.jpeg",
     colors: 1,
   },
    
