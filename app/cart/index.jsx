@@ -5,6 +5,7 @@ import { useState ,useEffect, Switch, Match} from "vaderjs"
 export default function (){
     const cart = new Cart()
     let [items, setItems] = useState(cart.items);
+    let [loading, setLoading] = useState(false)
 
     // Function to merge items with the same id
     const mergeItems = (items) => {
@@ -29,9 +30,12 @@ export default function (){
     var tax = 0.07;
 
     const createOrder =  async () => {
+
       if(api.authStore.isValid === false){
         window.location.href = '/auth/login'
+        return
       }
+      setLoading(true)
       const order = {
         products: items,
         subtotal: subtotal,
@@ -60,6 +64,7 @@ export default function (){
         body: JSON.stringify({ orderID }),
       }).then((res) => res.json())
      
+      setLoading(false)
       window.location.href = `/checkout/${checkoutID}`
       cart.clear()
     }
@@ -257,7 +262,7 @@ export default function (){
                    <Switch>
                     <Match when={cart.items.length > 0}>
                     <button className="w-full rounded-full border py-4 hover:border-black  text-sm font-medium" onClick={() => createOrder()}>
-                     Check Out
+                      {loading ? 'Processing...' : 'Checkout'}
                     </button>
                     </Match>
                    </Switch>
