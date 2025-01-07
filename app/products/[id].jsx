@@ -32,12 +32,15 @@ export default function () {
  
     function isOutofStock() {
         let available = false
+        let instockcount = 0
         product.stock.forEach((stock) => {
             if(stock.size === selectedSize && stock.quantity > 0) {
                 available = true
+            }else{
+                instockcount++
             }
         })
-        return !available
+        return  instockcount === 0 || !available
     }
 
     useEffect(() => {
