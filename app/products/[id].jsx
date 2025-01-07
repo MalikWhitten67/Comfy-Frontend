@@ -24,7 +24,7 @@ export default function () {
         'XL',
     ]
 
-    const thumbnails = images.map((src, index) => (
+    const thumbnails = product.images.map((src, index) => (
         <button
             key={index}
             onClick={() => setCurrentImageIndex(index)}
@@ -59,7 +59,7 @@ export default function () {
                                 {/* Main Image */}
                                 <div className="relative aspect-square w-full overflow-hidden rounded-lg">
                                     <img
-                                        src={images[currentImageIndex]}
+                                        src={product.images[currentImageIndex]}
                                         alt="Product"
                                         className="object-cover"
                                     />
