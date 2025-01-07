@@ -1,20 +1,26 @@
 import Products from "../../src/Products/index.json"
-import { A, useState } from "vaderjs";
+import { A, Match, Switch, useState } from "vaderjs";
 import Nav from "../../src/Components/nav";
 import Cart from "../../src/Sdk";
 import ItemAdded from "../../src/Components/ItemAdded";
+import api from "../../src/api";
 export default function () {  
     const cart = new Cart()
-    let [product, setProduct] = useState(Products.shirts.find((product) => product.id === parseInt(params.id)) || Products.shirts[0]) 
+    let [product, setProduct] = useState(Products.items.find((product) => product.id === params.id) ? {
+        id: params.id,
+        images: Products.items.find((product) => product.id === params.id).images,
+        name: Products.items.find((product) => product.id === params.id).name,
+        price: Products.items.find((product) => product.id === params.id).price,
+        sizes: [],
+        stock: []
+    } : { id: 0, images: [], name: '', price: 0, sizes: [], stock: []
+    }) 
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     let [favorite, setFavorite] = useState(cart.favorites.includes(product.id))
     const [error, setError] = useState(null)
+    const [loader, setLoader] = useState(false)
     const [selectedSize, setSelectedSize] = useState(null) 
-    const images = [
-        '/public/Products/shirts/comfy_V1.jpeg',
-        '/placeholder.svg?height=600&width=600',
-        '/placeholder.svg?height=600&width=600',
-    ]
+     
 
     const sizes = [
         'XS',
@@ -23,6 +29,26 @@ export default function () {
         'L',
         'XL',
     ]
+ 
+    function isOutofStock() {
+        let available = false
+        product.stock.forEach((stock) => {
+            if(stock.size === selectedSize && stock.quantity > 0) {
+                available = true
+            }
+        })
+        return !available
+    }
+
+    useEffect(() => {
+        if(isServer) return
+        setLoader(true)
+        api.collection("products").getOne(params.id).then((data) => {
+            console.log(data)
+            setProduct({...product, sizes: data.sizes, stock: data.stock})
+            setLoader(false)
+        })
+    }, [])
 
     const thumbnails = product.images.map((src, index) => (
         <button
@@ -98,24 +124,34 @@ export default function () {
                             <div>
                                 <h2 className="mb-4 text-lg font-semibold">Select Size</h2>
                                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                                    {sizes.map((size) => ( 
-                                        <button
-                                            key={size}
-                                            onClick={() => setSelectedSize(size)}
-                                            className={`rounded-full   px-6 py-4 ${
-                                                error && error === 'size' ?  'border border-red-500' :  selectedSize === size ? 'border-black border' : 'hover:border-black border border-gray-300'
-                                                }`}
-                                        >
-                                            {size}
-                                        </button>
-                                    ))}
+                                    {
+                                        loader ?   <div>Loading...</div> : product.sizes.map((size) => (  
+                                            <button
+                                                key={size}
+                                                onClick={() => setSelectedSize(size)}
+                                                disabled={product.stock.find((stock) => stock.size.toLowerCase() === size.toLowerCase())?.quantity === 0}
+                                                className={`rounded-full   px-6 py-4 ${
+                                                    error && error === 'size' ?  'border border-red-500' :  selectedSize === size ? 'border-black border' : 'hover:border-black border border-gray-300'
+                                                    }
+                                                    ${
+                                                        product.stock.find((stock) => stock.size.toLowerCase() === size.toLowerCase())?.quantity === 0 && 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                                    }
+                                                    `}
+                                            >
+                                                {size}
+                                            </button>
+                                        ))
+
+                                    } 
                                 </div>
                             </div>
 
                             {/* Add to Bag & Favorite */}
                             <div className="flex flex-col gap-4">
                                 <button className="w-full rounded-full bg-black px-6 py-4 text-white hover:bg-gray-800"
+                                disabled={isOutofStock()}
                                 onClick={() => {
+                                    
                                     if (!selectedSize) {
                                         setError('size')
                                         setTimeout(() => setError(null), 2000)
@@ -125,7 +161,9 @@ export default function () {
                                     document.getElementById('item-added').showModal()
                                 }}
                                 >
-                                    Add to Bag
+                                   {
+                                     isOutofStock() ? 'Out of Stock' : 'Add to Bag'
+                                   }
                                 </button>
                                 <button 
                                 onClick={() => {

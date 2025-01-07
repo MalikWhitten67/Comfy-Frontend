@@ -27,30 +27,27 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+  console.log(api.authStore.isValid)
 
   return (
     <header className="sticky top-0 z-50 w-full">
       {/* Top Bar */}
       <div className="bg-base-200 px-4 py-2 text-sm">
         <div className="flex items-center justify-end gap-4">
-          <A href="#" className="hover:underline">Help</A>
+          <a href="#" className="hover:underline">Help</a>
           <span>|</span>
-          <Switch>
-            <Match when={api.authStore.isValid}>
-              <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className=" m-1">My Account</div>
-                <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                  <li><a>Profile</a></li>
-                  <li><a href="/member/orders">Your Orders</a></li>
-                  <li><a href="/member/settings">Account Settings</a></li>
-                  <li><a onClick={() => api.authStore.clear() && window.location.reload()}>Sign Out</a></li>
-                </ul>
-              </div>
-            </Match>
-            <Match when={!api.authStore.isValid}>
-              <A href="/auth/login" className="hover:underline">Sign In</A>
-            </Match>
-          </Switch>
+          {
+            api.authStore.isValid ?  <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className=" m-1">My Account</div>
+            <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+              <li><a>Profile</a></li>
+              <li><a href="/member/orders">Your Orders</a></li>
+              <li><a href="/member/settings">Account Settings</a></li>
+              <li><a onClick={() => api.authStore.clear() && window.location.reload()}>Sign Out</a></li>
+            </ul>
+          </div> : <a href="/auth/login">Login</a>
+          }
+           
         </div>
       </div>
 

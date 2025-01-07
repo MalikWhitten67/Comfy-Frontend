@@ -6,14 +6,16 @@ interface ProductCardProps {
   price: number
   category: string
   colors: number
+  mainImage: string
+  images: string[]
 }
 
-export function ProductCard({ id, name, price, category, colors, image }: ProductCardProps) {
+export function ProductCard({ id, name, price, category, colors, mainImage }: ProductCardProps) {
   return (
     <A href={`/products/${id}`} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
       <figure className="aspect-square">
         <img
-          src={image}
+          src={mainImage}
           alt={name}
           className="object-cover w-full h-full"
         />
