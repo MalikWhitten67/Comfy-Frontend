@@ -5,6 +5,7 @@ import { useState ,useEffect, Switch, Match} from "vaderjs"
 export default function (){
     const cart = new Cart()
     let [items, setItems] = useState(cart.items);
+    console.log(items)
     let [loading, setLoading] = useState(false)
 
     // Function to merge items with the same id
