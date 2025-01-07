@@ -119,7 +119,7 @@ export default function (){
                     <div key={item.id} className="flex gap-6 border-b pb-6">
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                         <img
-                          src={item.image}
+                          src={item.mainImage}
                           alt={item.name}
                           width={96}
                           height={96}
