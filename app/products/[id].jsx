@@ -12,6 +12,7 @@ export default function () {
         images: Products.items.find((product) => product.id === params.id).images,
         name: Products.items.find((product) => product.id === params.id).name,
         price: Products.items.find((product) => product.id === params.id).price,
+        mainImage:Products.items.find((product) => product.id === params.id).mainImage,
         sizes: [],
         stock: []
     } : { id: 0, images: [], name: '', price: 0, sizes: [], stock: []
