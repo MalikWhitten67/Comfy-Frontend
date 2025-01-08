@@ -67,6 +67,7 @@ export default function SettingsPage() {
                 api.collection("users").authRefresh()
                 document.getElementById('showModal').close()
                 setActiveTab('')
+                
             })
         }, 1000)()
     }, [formData])
