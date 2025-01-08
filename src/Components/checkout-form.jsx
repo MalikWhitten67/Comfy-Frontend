@@ -28,6 +28,7 @@ export default function CheckoutForm({ loading, amount }) {
                 email: api.authStore.record.email,
                 address: api.authStore.record.address,
             })
+            console.log(formData)
         }
 
 
