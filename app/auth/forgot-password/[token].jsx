@@ -31,7 +31,7 @@ export default function(){
                 })
           }, 1000)()
           
-    }, [formData])
+    }, [newFormData])
     return (
         <main className="flex-1  xl:p-8">
         <h2 className="text-2xl font-semibold mb-8">Forgot Password</h2>
