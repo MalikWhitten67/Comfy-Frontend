@@ -82,13 +82,13 @@ export default function () {
                                     {/* Navigation Arrows */}
                                     <div className="absolute inset-0 flex items-center justify-between p-4">
                                         <button
-                                            onClick={() =>  setCurrentImageIndex(currentImageIndex - 1 < 0 ? images.length - 1 : currentImageIndex - 1)}
+                                            onClick={() =>  setCurrentImageIndex(currentImageIndex - 1 < 0 ? product.images.length - 1 : currentImageIndex - 1)}
                                             className="rounded-full bg-white p-2 shadow-lg"
                                         >
                                             ←
                                         </button>
                                         <button
-                                            onClick={() => setCurrentImageIndex(currentImageIndex + 1 === images.length ? 0 : currentImageIndex + 1)}
+                                            onClick={() => setCurrentImageIndex(currentImageIndex + 1 === product.images.length ? 0 : currentImageIndex + 1)}
                                             className="rounded-full bg-white p-2 shadow-lg"
                                         >
                                             →
