@@ -14,8 +14,7 @@ export default function AuthFlow() {
   // Placeholder function to check if user exists
   const checkUserExists = async (email) => { 
     setLoading(true)
-     try {
-      console.log(email)
+     try { 
       var u = await api.collection("users").getList(1,1, {
         filter:`email="${email}"`
       }) 
@@ -45,8 +44,7 @@ export default function AuthFlow() {
   const handleLoginSubmit = async (e ) => {
     e.preventDefault() 
     setLoading(true)
-    try {
-      console.log(userData)
+    try { 
       await api.collection("users").authWithPassword(userData.email, userData.password)
       window.location.href = '/'
     } catch (error) {
@@ -111,9 +109,9 @@ export default function AuthFlow() {
                   id="email"
                   required
                   placeholder="Email"
-                  value={userData.email}
+                  value={userData.email || ''}
                   onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-                  className="w-full rounded-none border-x-0 border-t-0 border-b focus:outline-none border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:border-black focus:ring-0"
+                  className="w-full rounded-none border-x-0 border-t-0 border-b focus:outline-none border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:outline-none focus:ring-0"
                 />
               </div>
               <button
@@ -138,7 +136,7 @@ export default function AuthFlow() {
                   placeholder="Password"
                   value={userData.password || ''}
                   onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:border-black focus:ring-0"
+                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:outline-none focus:ring-0"
                 />
               </div>
               <button
@@ -163,7 +161,7 @@ export default function AuthFlow() {
                   placeholder="Username"
                   value={userData.username || ''}
                   onChange={(e) => setUserData({ ...userData, username: e.target.value })}
-                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:border-black focus:ring-0"
+                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:outline-none focus:ring-0"
                 />
               </div>
               <div>
@@ -176,7 +174,7 @@ export default function AuthFlow() {
                   required
                   value={userData.dob || ''}
                   onChange={(e) => setUserData({ ...userData, dob: e.target.value })}
-                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 text-gray-500 focus:border-black focus:ring-0"
+                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 text-gray-500 focus:outline-none focus:ring-0"
                 />
               </div>
               <div>
@@ -190,7 +188,7 @@ export default function AuthFlow() {
                   placeholder="Password"
                   value={userData.password || ''}
                   onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:border-black focus:ring-0"
+                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:outline-none focus:ring-0"
                 />
               </div>
               <div>
@@ -204,7 +202,7 @@ export default function AuthFlow() {
                   placeholder="Confirm Password"
                   value={userData.confirmPassword || ''}
                   onChange={(e) => setUserData({ ...userData, passwordConfirm: e.target.value })}
-                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:border-black focus:ring-0"
+                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:outline-none focus:ring-0"
                 />
               </div>
               <button
