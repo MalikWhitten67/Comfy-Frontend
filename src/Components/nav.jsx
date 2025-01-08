@@ -7,10 +7,10 @@ export default function Navbar() {
   if (typeof window === 'undefined') {
     globalThis.window['items'] = []
   }
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [cartItems, setCartItems] = useState(window?.items?.length || 0)
+  const [isScrolled, setIsScrolled] = useState(false) 
   const [newItemAdded, setNewItemAdded] = useState(false)
-  const cart = new Cart()
+  const cart = new Cart() 
+  const [cartItems, setCartItems] = useState(cart.items.length || 0)
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
