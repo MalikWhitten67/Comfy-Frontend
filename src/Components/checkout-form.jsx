@@ -78,15 +78,15 @@ export default function CheckoutForm({ loading, amount }) {
                                 type="text"
                                 placeholder="Name"
                                 className="w-full p-3 border rounded-lg mb-3"
-                                value={formData.name}
+                                value={formData.name || ''}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 required
                             />
                             <input
                                 type="email"
-                                placeholder="example@poof.io"
+                                placeholder="example@comfy.com"
                                 className="w-full p-3 border rounded-lg"
-                                value={formData.email}
+                                value={formData.email || ''}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 required
                             />
@@ -101,7 +101,7 @@ export default function CheckoutForm({ loading, amount }) {
                                 type="text"
                                 placeholder="Address"
                                 className="w-full p-3 border rounded-lg"
-                                value={formData.address}
+                                value={formData.address || ''}
                                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                                 required
                             />
