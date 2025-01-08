@@ -19,10 +19,10 @@ function Modal({children}){
             onClick={() => { 
                 document.getElementById('showModal').close()
             }}
-            className="absolute right-4 top-4 rounded-full p-1 hover:bg-gray-100"
+            className="absolute right-4 top-4 rounded-full text-1xl p-1 hover:bg-gray-100"
             aria-label="Close modal"
           >
-            X
+            x
           </button>
   
            {children}
@@ -44,9 +44,7 @@ export default function SettingsPage() {
         phone: api.authStore.record?.phone || '',
         dateOfBirth:  api.authStore.record?.dob || null, 
         addresses: api.authStore.record?.addresses || [], 
-    }, false)
-    console.log(formData)
-
+    }, false) 
     const debounce = (func, wait) => {
         let timeout
         return function (...args) {
@@ -154,7 +152,7 @@ export default function SettingsPage() {
     return (
          <SharedComponent title="Settings">
              <div className="flex min-h-screen xl:p-12 p-2 bg-white"> 
-                    <div className="xl:w-64 w-full border-r min-h-screen xl:p-6
+                    <div className="xl:w-[25rem] w-full border-r min-h-screen xl:p-6
                      
                     ">
                         <h1 className="text-xl font-semibold mb-6">Settings</h1>

@@ -5,6 +5,7 @@ import api from '../../../src/api'
   
 export default function AuthFlow() {
   const [step, setStep] = useState('email')
+  const [forgotPassword, setForgotPassword] = useState(false)
   const [userData, setUserData] = useState({
     emailVisibility: true,
     addresses: [],
@@ -30,15 +31,27 @@ export default function AuthFlow() {
   const handleEmailSubmit = async (e ) => { 
     e.preventDefault() 
     setLoading(true)
-    
-    try {
-      const userExists = await checkUserExists(userData.email)
-      setStep(userExists ? 'login' : 'signup')
-    } catch (error) {
-      console.error('Error checking user:', error)
-    } finally {
-      setLoading(false)
+    if(forgotPassword){
+      try {
+        await api.collection("users").requestPasswordReset(userData.email)
+        setStep('reset')
+      } catch (error) {
+        alert('Error resetting password:', error)
+      } finally {
+        setLoading(false)
+      }
     }
+    else{
+      try {
+        const userExists = await checkUserExists(userData.email)
+        setStep(userExists ? 'login' : 'signup')
+      } catch (error) {
+        console.error('Error checking user:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
   }
 
   const handleLoginSubmit = async (e ) => {
@@ -84,19 +97,33 @@ export default function AuthFlow() {
         <div className="space-y-6">
           <div className="text-center">
             <h1 className="text-2xl font-medium">
-              Enter your email to join us or sign in.
+              {
+                forgotPassword ? 'Enter your email to reset your password' : step === 'email' || step === "login" ? 'Welcome back! Enter your email to continue.' : 'Create an account'
+              }
             </h1>
           </div>
 
           {/* Country Selector */}
-          <div className="flex items-center justify-between">
-            <span>Country</span>
-            <select className="text-gray-500" onChange={(e) => setUserData({ ...userData, country: e.target.value })}>
-              <option>United States</option>
-              <option>Canada</option>
-              <option>Mexico</option>
-            </select>
-          </div>
+          {
+            !forgotPassword && (
+            <div className="flex items-center justify-between">
+              <span>Country</span>
+              <select className="text-gray-500" onChange={(e) => setUserData({ ...userData, country: e.target.value })}>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>Mexico</option>
+              </select>
+            </div>
+            )
+          }
+          {
+            step === 'reset' && (
+              <p className="text-center text-sm text-gray-500">
+                We have sent you an email with instructions to reset your password.
+                the link was sent to {userData.email}
+              </p>
+            )
+          }
 
           {step === 'email' && (
             <form onSubmit={handleEmailSubmit} className="space-y-4">
@@ -118,7 +145,7 @@ export default function AuthFlow() {
                 type="submit" 
                 className="w-full rounded-full bg-black py-3 text-white transition-colors hover:bg-gray-800 "
               >
-                {loading ? 'Checking...' : 'Continue'}
+                {loading && !forgotPassword ? 'Checking...' : forgotPassword ? 'Reset Password' : 'Continue'}
               </button>
             </form>
           )}
@@ -213,6 +240,13 @@ export default function AuthFlow() {
               </button>
             </form>
           )}
+
+          <button className="text-center text-sm text-gray-500 hover:underline" onClick={() => {
+            setStep('email')
+            setForgotPassword(!forgotPassword)
+          }}>
+            Forgot your password?
+          </button>
 
           <p className="text-center text-sm text-gray-500">
             By continuing, I agree to Comfy's{' '}

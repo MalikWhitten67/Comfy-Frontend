@@ -17,8 +17,16 @@
             "destination": "/favorites/index.html"
         },
         {
+            "source": "/member/orders",
+            "destination": "/member/orders/index.html"
+        },
+        {
             "source": "/member/settings",
             "destination": "/member/settings/index.html"
+        },
+        {
+            "source": "/auth/forgot-password/:token",
+            "destination": "/auth/forgot-password/index.html"
         },
         {
             "source": "/checkout/:id",

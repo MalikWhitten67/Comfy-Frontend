@@ -16,7 +16,7 @@ export default function({setFormData, formData}) {
                     <label className="block text-sm mb-2">Email*</label>
                     <input
                         type="email"
-                        value={api.authStore.record?.email}
+                        value={api.authStore.record?.email || ''}
                         onChange={(e) => setNewFormData({ ...formData, email: e.target.value })}
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
                     />

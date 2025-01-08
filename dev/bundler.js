@@ -197,15 +197,18 @@ const generatePage = async (
   await Bun.write(
     process.cwd() + "/dist/" + route + "/index.html",
     `<!DOCTYPE html>
-    
-       ${process.env.bindes}
-      ${h} 
-      <script type="module"> 
+     <head>
+      <script  defer type="module"> 
         import c from '${process.env.filePath}'
         import {render, e} from '/src/vader/index.js'
         window.e = e
         render(c, document.body)
       </script> 
+      
+       ${process.env.bindes}
+      </head> 
+      ${h} 
+       
             `
   );
   console.log(
