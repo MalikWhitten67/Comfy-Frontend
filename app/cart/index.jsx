@@ -4,8 +4,7 @@ import Cart from "../../src/Sdk"
 import { useState ,useEffect, Switch, Match} from "vaderjs"
 export default function (){
     const cart = new Cart()
-    let [items, setItems] = useState(cart.items);
-    console.log(items)
+    let [items, setItems] = useState(cart.items); 
     let [loading, setLoading] = useState(false)
 
     // Function to merge items with the same id
@@ -43,8 +42,7 @@ export default function (){
         tax: taxAmount,
         total: total,
         owner: api.authStore.record.id
-      }
-      console.log(order)
+      } 
 
       const { orderID } = await fetch('https://comfy-backend-vert.vercel.app/createOrder', {
         method: 'POST',
@@ -52,8 +50,7 @@ export default function (){
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(order),
-      }).then((res) => res.json()) 
-      console.log(orderID)
+      }).then((res) => res.json())  
 
 
 
@@ -81,6 +78,7 @@ export default function (){
     
       const subtotal = items.reduce((sum, item) => parseInt(item.price)  * item.quantity + sum, 0)
     
+      console.log(items)
       var taxAmount = subtotal * tax;
       var total = subtotal + taxAmount;
 
@@ -96,7 +94,15 @@ export default function (){
       }
     
       const removeItem = (id) => {
-        setItems(items.filter(item => item.id !== id))
+        let index = items.findIndex(item => item.id === id)
+        if (index !== -1) {
+          let newItems = [...items]
+          newItems.splice(index, 1)
+          cart.removeItem(index)
+          setItems(newItems)
+        }else{
+          console.log("Item not found")
+        } 
       }
     
       return (
@@ -131,7 +137,7 @@ export default function (){
                       <div className="flex flex-1 flex-col">
                         <div className="flex justify-between">
                           <div>
-                            <h3 className="font-medium">{item.name}</h3>
+                            <a href={`/products/${item.id}`} className="font-medium">{item.name}</a>
                             <p className="mt-1 text-sm text-gray-500">{item.category}</p>
                             <p className="mt-1 text-sm text-gray-500">{item.color}</p>
                             <p className="mt-1 text-sm text-gray-500">Size {item.size}</p>
@@ -192,11 +198,7 @@ export default function (){
                   ))}
                 </div>
     
-                {/* Free Pickup */}
-                <div className="mt-6">
-                  <h3 className="font-medium">Free Pickup</h3>
-                  <button className="mt-2 text-sm underline">Find a Store</button>
-                </div>
+                
               </div>
     
               {/* Summary */}

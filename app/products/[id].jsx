@@ -14,7 +14,8 @@ export default function () {
         price: Products.items.find((product) => product.id === params.id).price,
         mainImage:Products.items.find((product) => product.id === params.id).mainImage,
         sizes: [],
-        stock: []
+        stock: [],
+        quantity: 1
     } : { id: 0, images: [], name: '', price: 0, sizes: [], stock: []
     }) 
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -23,8 +24,7 @@ export default function () {
     const [loader, setLoader] = useState(false)
     const [selectedSize, setSelectedSize] = useState(null) 
      
-
-    console.log(selectedSize)
+ 
     const sizes = [
         'XS',
         'S',
@@ -142,6 +142,10 @@ export default function () {
                             <div className="flex flex-col gap-4">
                                 <button className="w-full rounded-full bg-black px-6 py-4 text-white hover:bg-gray-800" 
                                 onClick={() => { 
+                                    if(product.canBuyMultiple == false && cart.items.find((item) => item.id === product.id)) {
+                                        alert('You can only buy one of this product')
+                                        return
+                                    }
                                     if (isOutofStock()) { 
                                         return
                                     }

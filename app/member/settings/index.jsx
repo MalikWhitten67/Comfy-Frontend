@@ -40,13 +40,12 @@ export default function SettingsPage() {
     }, []) 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const [activeTab, setActiveTab] = useState(isMobile === false  ? 'account' : '', false)
-    const [formData, setFormData] = useState({
-        email: api.authStore.record?.email || '',
-        password: '••••••••••••',
+    const [formData, setFormData] = useState({ 
         phone: api.authStore.record?.phone || '',
         dateOfBirth:  api.authStore.record?.dob || null, 
         addresses: api.authStore.record?.addresses || [], 
     }, false)
+    console.log(formData)
 
     const debounce = (func, wait) => {
         let timeout
@@ -61,15 +60,14 @@ export default function SettingsPage() {
         }
     }
 
-    useEffect(() => {
-        console.log(formData)
-        debounce(() => { 
-            delete formData.password
-            delete formData.email
-            api.collection('users').update(api.authStore.record.id, formData)
+    useEffect(() => { 
+       debounce(() => { 
+            api.collection("users").update(api.authStore.record.id, formData)
             .then(() => {
                 api.collection("users").authRefresh()
-            })  
+                document.getElementById('showModal').close()
+                setActiveTab('')
+            })
         }, 1000)()
     }, [formData])
 

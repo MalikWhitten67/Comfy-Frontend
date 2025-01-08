@@ -1,13 +1,21 @@
 import { Switch, Match, useState } from "vaderjs"
+import api from "../../api"
 
 export default function ({ formData, setFormData }) {
    let [showAdd, setShowAdd] = useState(false)
    let [address, setAddress] = useState({})
    let [showEdit, setShowEdit] = useState(false)
+   let [isUpdate, setIsUpdate] = useState(false)
    function submitAddress(e) {
       e.preventDefault()
-      setFormData({ ...formData, addresses: [...formData.addresses, address] })
+      if (isUpdate) {
+        setFormData({ ...formData, addresses: formData.addresses.map((item) => item.street === address.street ? address : item) })
+      }else{
+         setFormData({ ...formData, addresses: [...formData.addresses, address] })
+      }
       setShowEdit(false)
+      setAddress({})
+      setIsUpdate(false)
    }
    return (
       <main className="flex-1 p-8">
@@ -23,6 +31,7 @@ export default function ({ formData, setFormData }) {
                               type="text"
                               placeholder="123 Main St"
                               required
+                              value={address.street || ''}
                               onChange={(e) => setAddress({ ...address, street: e.target.value })}
                               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
                            />
@@ -33,6 +42,7 @@ export default function ({ formData, setFormData }) {
                            <input
                               type="text"
                               required
+                              value={address.city || ''}
                               placeholder="Los Angeles"
                               onChange={(e) => setAddress({ ...address, city: e.target.value })}
                               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -41,7 +51,9 @@ export default function ({ formData, setFormData }) {
 
                         <div>
                            <label className="block text-sm mb-2">State*</label>
-                           <select required onChange={(e) => setAddress({ ...address, state: e.target.value })} className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200">
+                           <select required
+                           value={address.state || ''}
+                           onChange={(e) => setAddress({ ...address, state: e.target.value })} className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200">
                               <option value="CA">California</option>
                               <option value="NY">New York</option>
                               <option value="TX">Texas</option>
@@ -67,6 +79,7 @@ export default function ({ formData, setFormData }) {
                               type="text"
                               required
                               placeholder="90001"
+                              value={address.zip || ''} 
                               onChange={(e) => setAddress({ ...address, zip: e.target.value })}
                               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
                            />
@@ -83,9 +96,9 @@ export default function ({ formData, setFormData }) {
 
                            <button
                               type="submit"
-                              className="px-4 py-2 text-sm border rounded-lg hover:bg-gray-50"
+                              className="btn xl:px-4 xl:py-2 w-full text-sm border rounded-lg hover:bg-gray-50"
                            >
-                              Add
+                             {address.street ? 'Update Address' : 'Add Address'}
                            </button>
                         </div>
                      </div>
@@ -95,14 +108,20 @@ export default function ({ formData, setFormData }) {
          </div>
 
          <Switch>
-            <Match when={formData.addresses.length === 0 && showEdit == false}>
+            <Match when={api.authStore.record?.addresses.length === 0 && showEdit == false}>
                <p className="text-center">No Address Added</p>
 
             </Match>
-            <Match when={formData.addresses.length > 0 && showEdit == false}>
+            <Match when={api.authStore.record?.addresses.length > 0 && showEdit == false}>
                <div className="grid grid-cols-1 gap-4">
-                  {formData.addresses.map((address, index) => (
-                     <div key={index} className="p-4 border rounded-lg">
+                  {api.authStore.record?.addresses.map((address, index) => (
+                     <div key={index} className="p-4 border rounded-lg"
+                     onClick={() => {
+                        setIsUpdate(true)
+                        setAddress(address)
+                        setShowEdit(true)
+                     }}
+                     >
                         <h3 className="text-lg font-semibold">{address.street}</h3>
                         <p>{address.city}, {address.state}, {address.zip}</p>
                         <p>{address.country}</p>
