@@ -1,6 +1,6 @@
 export default function({setFormData, formData}) {
     return (
-        <main className="flex-1 p-8">
+        <main className="flex-1  xl:p-8">
         <h2 className="text-2xl font-semibold mb-8">Account Details</h2>
 
         <form className="max-w-2xl space-y-8">

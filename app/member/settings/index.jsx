@@ -5,6 +5,31 @@ import Navbar from '../../../src/Components/nav'
 import Account from '../../../src/Views/settings/Account'
 import api from '../../../src/api'
 import SharedComponent from '../../../src/Components/SharedComponent'
+import DeliveryAddress from '../../../src/Views/settings/DeliveryAddress'
+
+function Modal({children}){
+    return (
+        <dialog  
+        id="showModal"
+        className="modal  modal-bottom sm:modal-middle backdrop:bg-black/60"
+      >
+        <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
+          {/* Close button */}
+          <button 
+            onClick={() => { 
+                document.getElementById('showModal').close()
+            }}
+            className="absolute right-4 top-4 rounded-full p-1 hover:bg-gray-100"
+            aria-label="Close modal"
+          >
+            X
+          </button>
+  
+           {children}
+        </div>
+      </dialog>
+    )
+}
 
 export default function SettingsPage() {
     
@@ -12,17 +37,47 @@ export default function SettingsPage() {
         if (!api.authStore.isValid) {
             window.location.href = '/auth/login'
         }
-    }, [])
-    const [activeTab, setActiveTab] = useState('account', false)
+    }, []) 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const [activeTab, setActiveTab] = useState(isMobile === false  ? 'account' : '', false)
     const [formData, setFormData] = useState({
         email: api.authStore.record?.email || '',
         password: '••••••••••••',
         phone: api.authStore.record?.phone || '',
-        dateOfBirth:  api.authStore.record?.dob || null,
-        country: '',
-        state: '',
-        city: ''
+        dateOfBirth:  api.authStore.record?.dob || null, 
+        addresses: api.authStore.record?.addresses || [], 
     }, false)
+
+    const debounce = (func, wait) => {
+        let timeout
+        return function (...args) {
+            const context = this
+            console
+            if (timeout) clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                timeout = null
+                func.apply(context, args)
+            }, wait)
+        }
+    }
+
+    useEffect(() => {
+        console.log(formData)
+        debounce(() => { 
+            delete formData.password
+            delete formData.email
+            api.collection('users').update(api.authStore.record.id, formData)
+            .then(() => {
+                api.collection("users").authRefresh()
+            })  
+        }, 1000)()
+    }, [formData])
+
+    useEffect(() => {
+        if(isMobile){
+            document.getElementById('showModal').showModal()
+        }
+    }, [activeTab])
 
     const sidebarItems = [
         {
@@ -99,8 +154,10 @@ export default function SettingsPage() {
 
     return (
          <SharedComponent title="Settings">
-             <div className="flex min-h-screen p-5 bg-white"> 
-                    <div className="w-64 border-r min-h-screen p-6">
+             <div className="flex min-h-screen xl:p-12 p-2 bg-white"> 
+                    <div className="xl:w-64 w-full border-r min-h-screen xl:p-6
+                     
+                    ">
                         <h1 className="text-xl font-semibold mb-6">Settings</h1>
                         <nav className="space-y-1">
                             {sidebarItems.map((item) => (
@@ -116,13 +173,36 @@ export default function SettingsPage() {
                             ))}
                         </nav>
                     </div> 
+                    <div className="xl:block hidden w-full">
                     <Switch>
-                        <Match when={activeTab === 'account'}>
+                        <Match when={activeTab === 'account' && isMobile === false}>
                            <Account formData={formData} setFormData={setFormData} />
+                        </Match>
+                        <Match when={activeTab === 'addresses' && isMobile === false}>
+                            <DeliveryAddress formData={formData} setFormData={setFormData} />
                         </Match>
 
                     </Switch>
+                    </div>
+                    
                 </div>
+                <div className="xl:hidden block w-full">
+                        <Switch>
+                            <Match when={activeTab === 'account'}>
+                              <Modal>
+                                <Account formData={formData} setFormData={setFormData} />
+                              </Modal>
+                            </Match>
+                            <Match when={activeTab === 'addresses'}>
+                                <Modal>
+                                    <DeliveryAddress formData={formData} setFormData={setFormData} />
+                                </Modal>
+                            </Match>
+                            <Match when={activeTab === ''}>
+
+                            </Match>
+                        </Switch>
+                    </div>
          </SharedComponent>
     )
 }
