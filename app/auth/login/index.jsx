@@ -145,7 +145,7 @@ export default function AuthFlow() {
                 type="submit" 
                 className="w-full rounded-full bg-black py-3 text-white transition-colors hover:bg-gray-800 "
               >
-                {loading && !forgotPassword ? 'Checking...' : forgotPassword ? 'Reset Password' : 'Continue'}
+                {loading && !forgotPassword ? 'Checking...' : forgotPassword  && loading ? `Sending email...` : 'Continue'}
               </button>
             </form>
           )}
@@ -241,13 +241,16 @@ export default function AuthFlow() {
             </form>
           )}
 
-          <button className="text-center text-sm text-gray-500 hover:underline" onClick={() => {
-            setStep('email')
-            setForgotPassword(!forgotPassword)
-          }}>
-            Forgot your password?
-          </button>
-
+           {
+            !forgotPassword && (
+              <button className="text-center text-sm text-gray-500 hover:underline" onClick={() => {
+                setStep('email')
+                setForgotPassword(!forgotPassword)
+              }}>
+                Forgot your password?
+              </button> 
+            )
+           }
           <p className="text-center text-sm text-gray-500">
             By continuing, I agree to Comfy's{' '}
             <button className="underline">Privacy Policy</button> and{' '}
