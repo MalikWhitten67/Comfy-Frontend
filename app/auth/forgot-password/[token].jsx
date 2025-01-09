@@ -25,8 +25,7 @@ export default function () {
         if (newFormData.password !== newFormData.passwordConfirm) {
             setError('Passwords do not match')
             return
-        }
-        console.log(params.token)
+        } 
         api.collection("users").confirmPasswordReset(params.token, newFormData.password, newFormData.passwordConfirm)
             .then(() => { 
                 setSuccessful(true)
@@ -38,11 +37,7 @@ export default function () {
                 setError('Error resetting password')
             })
     }
-    useEffect(() => {
-        if (!params.token) {
-            window.location.href = '/auth/login'
-        }
-    }, [])
+     
     useEffect(() => {
         if (error) {
             setTimeout(() => {
@@ -50,6 +45,12 @@ export default function () {
             }, 3000)
         }
     }, [error])
+
+    useEffect(() => {
+       if(params.token === undefined){
+           window.location.href = '/auth/login'
+       }
+    }, [])
     return (
         <html>
             <head>
