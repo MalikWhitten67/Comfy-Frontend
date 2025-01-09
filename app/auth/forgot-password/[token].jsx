@@ -26,6 +26,7 @@ export default function () {
             setError('Passwords do not match')
             return
         }
+        console.log(params.token)
         api.collection("users").confirmPasswordReset(params.token, newFormData.password, newFormData.passwordConfirm)
             .then(() => { 
                 setSuccessful(true)
