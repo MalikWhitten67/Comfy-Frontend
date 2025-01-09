@@ -43,7 +43,10 @@ export default function Navbar() {
               <li><a>Profile</a></li>
               <li><a href="/member/orders">Your Orders</a></li>
               <li><a href="/member/settings">Account Settings</a></li>
-              <li><a onClick={() => api.authStore.clear() && window.location.reload()}>Sign Out</a></li>
+              <li><a onClick={() => {
+                api.authStore.clear()
+                window.location.href = '/'
+              }}>Sign Out</a></li>
             </ul>
           </div> : <a href="/auth/login">Login</a>
           }
