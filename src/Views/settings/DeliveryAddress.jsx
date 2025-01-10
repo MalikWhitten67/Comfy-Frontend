@@ -17,6 +17,58 @@ export default function ({ formData, setFormData }) {
       setAddress({})
       setIsUpdate(false)
    }
+   const states = {
+      'AL': 'Alabama',
+      'AK': 'Alaska',
+      'AZ': 'Arizona',
+      'AR': 'Arkansas',
+      'CA': 'California',
+      'CO': 'Colorado',
+      'CT': 'Connecticut',
+      'DE': 'Delaware',
+      'FL': 'Florida',
+      'GA': 'Georgia',
+      'HI': 'Hawaii',
+      'ID': 'Idaho',
+      'IL': 'Illinois',
+      'IN': 'Indiana',
+      'IA': 'Iowa',
+      'KS': 'Kansas',
+      'KY': 'Kentucky',
+      'LA': 'Louisiana',
+      'ME': 'Maine',
+      'MD': 'Maryland',
+      'MA': 'Massachusetts',
+      'MI': 'Michigan',
+      'MN': 'Minnesota',
+      'MS': 'Mississippi',
+      'MO': 'Missouri',
+      'MT': 'Montana',
+      'NE': 'Nebraska',
+      'NV': 'Nevada',
+      'NH': 'New Hampshire',
+      'NJ': 'New Jersey',
+      'NM': 'New Mexico',
+      'NY': 'New York',
+      'NC': 'North Carolina',
+      'ND': 'North Dakota',
+      'OH': 'Ohio',
+      'OK': 'Oklahoma',
+      'OR': 'Oregon',
+      'PA': 'Pennsylvania',
+      'RI': 'Rhode Island',
+      'SC': 'South Carolina',
+      'SD': 'South Dakota',
+      'TN': 'Tennessee',
+      'TX': 'Texas',
+      'UT': 'Utah',
+      'VT': 'Vermont',
+      'VA': 'Virginia',
+      'WA': 'Washington',
+      'WV': 'West Virginia',
+      'WI': 'Wisconsin',
+      'WY': 'Wyoming'
+   }
    return (
       <main className="flex-1 p-8">
          <h2 className="text-2xl font-semibold mb-8">Delivery Address</h2>
@@ -54,21 +106,11 @@ export default function ({ formData, setFormData }) {
                            <select required
                            value={address.state || ''}
                            onChange={(e) => setAddress({ ...address, state: e.target.value })} className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200">
-                              <option value="CA">California</option>
-                              <option value="NY">New York</option>
-                              <option value="TX">Texas</option>
-                              <option value="FL">
-                                 Florida
-                              </option>
-                              <option value="PA">Pennsylvania</option>
-                              <option value="IL">Illinois</option>
-                              <option value="OH">Ohio</option>
-                              <option value="GA">Georgia</option>
-                              <option value="WA">Washington</option>
-                              <option value="MA">Massachusetts</option>
-                              <option value="TN">Tennessee</option>
-                              <option value="IN">Indiana</option>
-                              <option value="MO">Missouri</option>
+                               {
+                                 new Array(50).fill(0).map((_, index) => (
+                                    <option key={index} value={Object.keys(states)[index]} selected={address.state === Object.keys(states)[index]}>{Object.values(states)[index]}</option>
+                                 ))
+                               }
                            </select>
 
                         </div>

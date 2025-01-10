@@ -104,6 +104,12 @@ export default function (){
           console.log("Item not found")
         } 
       }
+      var date =  new Date();
+
+      // typically 5-7 business days
+
+      date.setDate(date.getDate() + 7)
+      date = date.toDateString()
     
       return (
        <html>
@@ -189,7 +195,7 @@ export default function (){
     
                         <div className="mt-4">
                           <p className="text-sm text-gray-600">
-                            Arrives by Mon, Jan 13
+                            Arrives by  {date}
                             <button className="ml-2 underline">Edit Location</button>
                           </p>
                         </div>
@@ -251,14 +257,15 @@ export default function (){
                   </div>
     
                   {/* Member Message */}
-                  <p className="mt-6 text-sm">
-                    Members get free shipping on orders $50+
-                    <span className="ml-1 space-x-1">
-                      <button className="underline">Join us</button>
-                      <span>or</span>
-                      <button className="underline">Sign-in</button>
-                    </span>
-                  </p>
+                  <Switch>
+                    <Match when={!api.authStore.isValid}>
+                      <div className="mt-6">
+                        <p className="text-sm text-gray-600">
+                          <a href="/auth/login" className="underline">Sign in</a> to see your exclusive offers
+                        </p>
+                      </div>
+                    </Match>
+                  </Switch>
     
                   {/* Checkout Buttons */}
                   <div className="mt-6 space-y-4">

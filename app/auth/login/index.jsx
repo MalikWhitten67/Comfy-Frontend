@@ -56,9 +56,10 @@ export default function AuthFlow() {
 
   const handleLoginSubmit = async (e ) => {
     e.preventDefault() 
-    setLoading(true)
+    setLoading(true) 
     try { 
-      await api.collection("users").authWithPassword(userData.email, userData.password)
+        
+      await api.collection("users").authWithPassword(userData.email, userData.password || document.getElementById('password').value)
       window.location.href = '/'
     } catch (error) {
        alert('Error logging in:', error)
@@ -70,7 +71,7 @@ export default function AuthFlow() {
     e.preventDefault() 
     setLoading(true)
     try {
-      await api.collection("users").create(userData)
+      await api.collection("users").create(userData) 
       await api.collection("users").authWithPassword(userData.email, userData.password)
       window.location.href = '/'
     } catch (error) {
@@ -134,6 +135,7 @@ export default function AuthFlow() {
                 <input
                   type="email"
                   id="email"
+                  autocomplete="email"
                   required
                   placeholder="Email"
                   value={userData.email || ''}
@@ -160,6 +162,7 @@ export default function AuthFlow() {
                   type="password"
                   id="password"
                   required
+                  autoComplete="current-password"
                   placeholder="Password"
                   value={userData.password || ''}
                   onChange={(e) => setUserData({ ...userData, password: e.target.value })}

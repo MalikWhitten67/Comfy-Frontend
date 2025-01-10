@@ -5,26 +5,30 @@ import Cart from "../../src/Sdk";
 import ItemAdded from "../../src/Components/ItemAdded";
 import SharedComponent from "../../src/Components/SharedComponent";
 import api from "../../src/api";
-export default function () {  
+export default function () {
+    if (isServer) return <div></div>
     const cart = new Cart()
     let [product, setProduct] = useState(Products.items.find((product) => product.id === params.id) ? {
         id: params.id,
         images: Products.items.find((product) => product.id === params.id).images,
         name: Products.items.find((product) => product.id === params.id).name,
         price: Products.items.find((product) => product.id === params.id).price,
-        mainImage:Products.items.find((product) => product.id === params.id).mainImage,
+        mainImage: Products.items.find((product) => product.id === params.id).mainImage,
+        images: Products.items.find((product) => product.id === params.id).images,
         sizes: [],
         stock: [],
         quantity: 1
-    } : { id: 0, images: [], name: '', price: 0, sizes: [], stock: []
-    }) 
+    } : {
+        id: 0, images: [], name: '', price: 0, sizes: [], stock: []
+    })
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
-    let [favorite, setFavorite] = useState(cart.favorites.includes(product.id))
+    let [favorite, setFavorite] = useState((cart.favorites.find((item) => item.id === params.id) ? true : false))
+    console.log(favorite)
     const [error, setError] = useState(null)
     const [loader, setLoader] = useState(false)
-    const [selectedSize, setSelectedSize] = useState(null) 
-     
- 
+    const [selectedSize, setSelectedSize] = useState(null)
+
+
     const sizes = [
         'XS',
         'S',
@@ -32,17 +36,17 @@ export default function () {
         'L',
         'XL',
     ]
- 
-    function isOutofStock() { 
+
+    function isOutofStock() {
         return product.stock.every((stock) => stock.quantity === 0)
     }
 
     useEffect(() => {
-        if(isServer) return
+        if (isServer) return
         setLoader(true)
         api.collection("products").getOne(params.id).then((data) => {
             console.log(data)
-            setProduct({...product, sizes: data.sizes, stock: data.stock})
+            setProduct({ ...product, sizes: data.sizes, stock: data.stock })
             setLoader(false)
         })
     }, [])
@@ -63,39 +67,43 @@ export default function () {
         </button>
     ))
     return (
-         <SharedComponent title="Comfy - Product">
-             <div className="mx-auto max-w-7xl px-4 py-8">
-                    <div className="grid gap-8 md:grid-cols-2">
-                        {/* Product Images */}
-                        <div className="relative">
-                            <div className="sticky top-0 flex gap-4">
-                                {/* Thumbnails */}
-                                <div className="flex flex-col gap-4">{thumbnails}</div>
+        <SharedComponent title="Comfy - Product">
+            <div className="mx-auto max-w-7xl px-4 py-8">
+                <div className="grid gap-8 md:grid-cols-2">
+                    {/* Product Images */}
+                    <div className="relative">
+                        <div className="sticky top-0 flex gap-4">
+                            {/* Thumbnails */}
+                            <div className="flex flex-col gap-4">{thumbnails}</div>
 
-                                {/* Main Image */}
-                                <div className="relative aspect-square w-full overflow-hidden rounded-lg">
-                                    <img
-                                        src={product.images[currentImageIndex]}
-                                        alt="Product"
-                                        className="object-cover"
-                                    />
-                                    {/* Navigation Arrows */}
-                                    <div className="absolute inset-0 flex items-center justify-between p-4">
-                                        <button
-                                            onClick={() =>  setCurrentImageIndex(currentImageIndex - 1 < 0 ? product.images.length - 1 : currentImageIndex - 1)}
-                                            className="rounded-full bg-white p-2 shadow-lg"
-                                        >
-                                            ←
-                                        </button>
-                                        <button
-                                            onClick={() => setCurrentImageIndex(currentImageIndex + 1 === product.images.length ? 0 : currentImageIndex + 1)}
-                                            className="rounded-full bg-white p-2 shadow-lg"
-                                        >
-                                            →
-                                        </button>
-                                    </div>
-                                </div>
+                            {/* Main Image */}
+                            <div className="relative aspect-square w-full overflow-hidden rounded-lg">
+                                <img
+                                    src={product.images[currentImageIndex]}
+                                    alt="Product"
+                                    className="object-cover"
+                                />
+                                {/* Navigation Arrows */}
+                                <Switch>
+                                    <Match when={product.images.length > 1}>
+                                        <div className="absolute inset-0 flex items-center justify-between p-4">
+                                            <button
+                                                onClick={() => setCurrentImageIndex(currentImageIndex - 1 < 0 ? product.images.length - 1 : currentImageIndex - 1)}
+                                                className="rounded-full bg-white p-2 shadow-lg"
+                                            >
+                                                ←
+                                            </button>
+                                            <button
+                                                onClick={() => setCurrentImageIndex(currentImageIndex + 1 === product.images.length ? 0 : currentImageIndex + 1)}
+                                                className="rounded-full bg-white p-2 shadow-lg"
+                                            >
+                                                →
+                                            </button>
+                                        </div>
+                                    </Match>
+                                </Switch>
                             </div>
+                        </div>
                         </div>
 
                         {/* Product Details */}
@@ -115,18 +123,16 @@ export default function () {
                                 <h2 className="mb-4 text-lg font-semibold">Select Size</h2>
                                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                                     {
-                                        loader ?   <div>Loading...</div> : product.sizes.map((size) => (  
+                                        loader ? <div>Loading...</div> : product.sizes.map((size) => (
                                             <button
                                                 key={size}
                                                 onClick={() => {
                                                     if (product.stock.find((stock) => stock.size.toLowerCase() === size.toLowerCase())?.quantity === 0) return
                                                     setSelectedSize(size)
-                                                }} 
-                                                className={`rounded-full   px-6 py-4 ${
-                                                    error && error === 'size' ?  'border border-red-500' :  selectedSize === size ? 'border-black border' : 'hover:border-black border border-gray-300'
+                                                }}
+                                                className={`rounded-full   px-6 py-4 ${error && error === 'size' ? 'border border-red-500' : selectedSize === size ? 'border-black border' : 'hover:border-black border border-gray-300'
                                                     }
-                                                    ${
-                                                        product.stock.find((stock) => stock.size.toLowerCase() === size.toLowerCase())?.quantity === 0 && 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                                    ${product.stock.find((stock) => stock.size.toLowerCase() === size.toLowerCase())?.quantity === 0 && 'bg-gray-200 text-gray-400 cursor-not-allowed'
                                                     }
                                                     `}
                                             >
@@ -134,42 +140,42 @@ export default function () {
                                             </button>
                                         ))
 
-                                    } 
+                                    }
                                 </div>
                             </div>
 
                             {/* Add to Bag & Favorite */}
                             <div className="flex flex-col gap-4">
-                                <button className="w-full rounded-full bg-black px-6 py-4 text-white hover:bg-gray-800" 
-                                onClick={() => { 
-                                    if(product.canBuyMultiple == false && cart.items.find((item) => item.id === product.id)) {
-                                        alert('You can only buy one of this product')
-                                        return
-                                    }
-                                    if (isOutofStock()) { 
-                                        return
-                                    }
-                                    if (!selectedSize) {
-                                        setError('size')
-                                        setTimeout(() => setError(null), 2000)
-                                        return
-                                    }
-                                    cart.addItem({ ...product, size: selectedSize })
-                                    console.log(cart.items)
-                                    document.getElementById('item-added').showModal()
-                                }}
+                                <button className="w-full rounded-full bg-black px-6 py-4 text-white hover:bg-gray-800"
+                                    onClick={() => {
+                                        if (product.canBuyMultiple == false && cart.items.find((item) => item.id === product.id)) {
+                                            alert('You can only buy one of this product')
+                                            return
+                                        }
+                                        if (isOutofStock()) {
+                                            return
+                                        }
+                                        if (!selectedSize) {
+                                            setError('size')
+                                            setTimeout(() => setError(null), 2000)
+                                            return
+                                        }
+                                        cart.addItem({ ...product, size: selectedSize })
+                                        console.log(cart.items)
+                                        document.getElementById('item-added').showModal()
+                                    }}
                                 >
-                                   {
-                                     isOutofStock() ? 'Out of Stock' : 'Add to Bag'
-                                   }
+                                    {
+                                        isOutofStock() ? 'Out of Stock' : 'Add to Bag'
+                                    }
                                 </button>
-                                <button 
-                                onClick={() => {
-                                    cart.toggleFavoriteItem(product.id)
-                                    setFavorite(!favorite)
-                                }}
-                                className="w-full rounded-full border border-gray-300 px-6 py-4 hover:border-black">
-                                    {cart.favorites.includes(product.id) ? 'Remove from Favorites' : ' Favorite ♡'}
+                                <button
+                                    onClick={() => {
+                                        cart.toggleFavoriteItem(product)
+                                        setFavorite(!favorite)
+                                    }}
+                                    className="w-full rounded-full border border-gray-300 px-6 py-4 hover:border-black">
+                                    {favorite ? 'Remove from Favorites' : 'Add to Favorites'}
                                 </button>
                             </div>
 
@@ -187,12 +193,12 @@ export default function () {
                                 <button className="text-sm underline">Find a Store</button>
                             </div>
 
-                            
+
                         </div>
                     </div>
                 </div>
                 <ItemAdded />
-            </SharedComponent>
+        </SharedComponent>
 
     )
 }
