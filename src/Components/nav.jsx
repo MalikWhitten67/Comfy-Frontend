@@ -1,8 +1,9 @@
 'use client'
 
-import { A, Match, Switch, useEffect, useState } from "vaderjs"
+import { A, Match, Switch, useEffect, useState, useRef } from "vaderjs"
 import Cart from "../Sdk"
 import api from "../api"
+import Search from "./Search"
 export default function Navbar() {
   if (typeof window === 'undefined') {
     globalThis.window['items'] = []
@@ -11,6 +12,8 @@ export default function Navbar() {
   const [newItemAdded, setNewItemAdded] = useState(false)
   const cart = new Cart() 
   const [cartItems, setCartItems] = useState(cart.items.length || 0)
+  
+  const searchRef = useRef()
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
@@ -27,6 +30,8 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+
   console.log(api.authStore.isValid)
 
   return (
@@ -74,24 +79,9 @@ export default function Navbar() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden lg:block lg:w-[200px]">
-              <div className="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" className="absolute left-2 top-2.5 h-4 w-4 text-base-content/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="input input-bordered input-sm w-full pl-8"
-                />
-              </div>
-            </div>
-            <button className="btn btn-ghost btn-circle lg:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
+          <div className="flex items-center lg:gap-4 ">
+            <Search />
+            
             <button className="btn btn-ghost btn-circle" onClick={() => window.location.href = "/favorites"}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
