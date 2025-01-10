@@ -4,6 +4,7 @@ import { Match, Switch, useState, useEffect } from 'vaderjs'
 import api from '../api'
 
 export default function CheckoutForm({ loading, amount }) { 
+    console.log(loading)
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -58,14 +59,7 @@ export default function CheckoutForm({ loading, amount }) {
             <div className="mb-8">
                 <h2 className="text-xl font-semibold mb-2">Pay</h2>
                 <div className="text-3xl font-bold">
-                    <Switch>
-                        <Match when={loading}>
-                            <span>Loading...</span>
-                        </Match>
-                        <Match when={!loading}>
-                           ${amount.toFixed(2)}
-                        </Match>
-                    </Switch>
+                    ${amount.toFixed(2)}
                 </div>
             </div>
 
@@ -94,7 +88,7 @@ export default function CheckoutForm({ loading, amount }) {
                     )
                 }
                 <Switch>
-                    <Match when={api.authStore.isValid && !api.authStore.record.address}>
+                    <Match when={api.authStore.isValid && !api.authStore.record.addresses.length > 0}>
                         <div>
                             <h3 className="text-sm font-medium mb-4">Address/Shipping Information</h3>
                             <input
@@ -113,22 +107,19 @@ export default function CheckoutForm({ loading, amount }) {
                             </div>
                         </div>
                     </Match>
-                    <Match when={api.authStore.isValid && api.authStore.record.address}>
+                    <Match when={api.authStore.isValid && api.authStore.record.addresses.length > 0}>
                         <div>
-                            <h3 className="text-sm font-medium mb-4">Address/Shipping Information</h3>
-                            <input
-                                type="text"
-                                placeholder="Address"
-                                className="w-full p-3 border rounded-lg"
-                                value={formData.address}
-                                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                                required
-                            />
-                            <div className="mt-2">
-                                <label className="inline-flex items-center text-sm text-gray-600">
-                                    <input type="checkbox" className="form-checkbox" />
-                                    <span className="ml-2">Check autofilled address</span>
-                                </label>
+                            <h3 className="text-sm font-medium mb-4">Select an Address</h3>
+                            <div className="space-y-2 flex flex-col">
+                                {api.authStore.record.addresses.map((address) => (
+                                    <label className="inline-flex gap-2 items-center text-sm text-gray-600">
+                                        <input type="radio" name="address" className="form-radio"
+                                        required
+                                        onChange={(e) => setFormData({ ...formData, address: address })}
+                                        />
+                                        <span>{address.street} {address.city}, {address.state} {address.zip}</span>
+                                    </label>
+                                ))}
                             </div>
                         </div>
                     </Match>

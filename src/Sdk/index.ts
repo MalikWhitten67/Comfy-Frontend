@@ -94,6 +94,7 @@ class Cart {
         let index = this.favorites.findIndex((i: any) => i.id === item.id);
         if (index === -1) {
             this.favoriteItem(item);
+            this.triggerEvent("itemFavorited", item);
         } else {
             this.removeFavorite(index);
         }

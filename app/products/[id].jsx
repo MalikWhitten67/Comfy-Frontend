@@ -171,8 +171,9 @@ export default function () {
                                 </button>
                                 <button
                                     onClick={() => {
-                                        cart.toggleFavoriteItem(product)
+                                        cart.toggleFavoriteItem(product) 
                                         setFavorite(!favorite)
+                                        document.getElementById('item-added').showModal()
                                     }}
                                     className="w-full rounded-full border border-gray-300 px-6 py-4 hover:border-black">
                                     {favorite ? 'Remove from Favorites' : 'Add to Favorites'}

@@ -5,6 +5,7 @@ import CheckoutForm from '../../src/Components/checkout-form'
 import CashAppPayment from '../../src/Components/cash-app-payment'
 
 export default function CheckoutPage() {
+  if(isServer) return <div></div>
   const [showCashApp, setShowCashApp] = useState(false)
   let [loading, setLoading] = useState(false)
   const [checkoutData, setCheckoutData] = useState({ 
@@ -28,17 +29,21 @@ export default function CheckoutPage() {
   const amount = parseInt(params.amount) || 0
 
   useEffect(() => {
+    console.log("called")
     const fetchData = async () => {
       setLoading(true)
       const response = await fetch(`https://comfy-backend-vert.vercel.app/checkout/${params.id}`)
       const data = await response.json()
-      setCheckoutData(data)
-      setLoading(false)
+      setCheckoutData(data) 
     }  
     
     fetchData()
+    .then(() => {
+      console.log('Data fetched', loading)
+      setLoading(!loading)
+    })
   }, [])
-  console.log(checkoutData)
+  console.log(checkoutData, loading)
   return (
     <html>
       <head>
