@@ -1,6 +1,6 @@
 'use client'
 
-import { A, Match, Switch, useEffect, useState, useRef } from "vaderjs"
+import { A, Match, Switch, useEffect, useState  } from "vaderjs"
 import Cart from "../Sdk"
 import api from "../api"
 import Search from "./Search"
@@ -12,8 +12,7 @@ export default function Navbar() {
   const [newItemAdded, setNewItemAdded] = useState(false)
   const cart = new Cart() 
   const [cartItems, setCartItems] = useState(cart.items.length || 0)
-  
-  const searchRef = useRef()
+   
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
