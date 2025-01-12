@@ -1,8 +1,7 @@
  
 
-import { useState } from 'vaderjs' 
-import api from '../../../src/api'
-  
+import { useRef, useState } from 'vaderjs' 
+import api from '../../../src/api' 
 export default function AuthFlow() {
   const [step, setStep] = useState('email')
   const [forgotPassword, setForgotPassword] = useState(false)
@@ -11,6 +10,9 @@ export default function AuthFlow() {
     addresses: [],
   })
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const pRef = useRef(null)
 
   // Placeholder function to check if user exists
   const checkUserExists = async (email) => { 
@@ -56,13 +58,13 @@ export default function AuthFlow() {
 
   const handleLoginSubmit = async (e ) => {
     e.preventDefault() 
-    setLoading(true) 
+    setLoading(true)  
     try { 
         
       await api.collection("users").authWithPassword(userData.email, userData.password || document.getElementById('password').value)
       window.location.href = '/'
-    } catch (error) {
-       alert('Error logging in:', error)
+    } catch (error) { 
+       setError('Password is incorrect')
        setLoading(false)
     }
   }
@@ -75,17 +77,29 @@ export default function AuthFlow() {
       await api.collection("users").authWithPassword(userData.email, userData.password)
       window.location.href = '/'
     } catch (error) {
-       alert('Error signing up:', error)
+       alert('Error signing up:', error) 
        setLoading(false)
     }
   }
 
+
+  useEffect(() => {
+    if (error) {
+      console.log(pRef)
+      setTimeout(() => {
+        setError('')
+        pRef.current.focus()
+      }, 3000)
+    }
+  }, [error])
+
   return (
     <html>
       <head>
-        <title>Confy - Title</title>
+        <title>Confy - One of One</title>
         <meta name="description" content="Comfy - One of One" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" href="/public/Comfy_logo_V2.png" type="image/x-icon" />
       </head>
       <body>
       <div className="min-h-screen bg-white">
@@ -155,8 +169,8 @@ export default function AuthFlow() {
           {step === 'login' && (
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
+                <label htmlFor="password" >
+                  {error.length > 0 ? error : 'Password'}
                 </label>
                 <input
                   type="password"
@@ -165,8 +179,12 @@ export default function AuthFlow() {
                   autoComplete="current-password"
                   placeholder="Password"
                   value={userData.password || ''}
+                  ref={pRef}
                   onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-                  className="w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:outline-none focus:ring-0"
+                  className={
+                    "w-full rounded-none border-x-0 border-t-0 border-b border-gray-300 px-0 py-2 placeholder:text-gray-500 focus:outline-none focus:ring-0"
+                     + (error.length > 0 ? ' border-red-500' : '')
+                  }
                 />
               </div>
               <button

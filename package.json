@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build": "vaderjs prod"
+    "build": "vaderjs prod",
+    "dev": "vaderjs dev"
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",

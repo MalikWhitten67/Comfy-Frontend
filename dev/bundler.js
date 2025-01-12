@@ -132,14 +132,13 @@ const handleReplacements = (code) => {
       line = updatedLine; 
     }
 
-    if (!hasImport && line.match(/\buseRef\d*\(/) && !line.includes("this")) {
-     
-
-      let key = line.split(' ')[1].split('=')[0];
-
-      let updatedLine = line.replace(/\buseRef\d*\(/, `this.useRef('${key}',`);
-
-      line = updatedLine; 
+    if (!hasImport && line.match(/\buseRef\d*\(/) && line.includes('[') && !line.includes("this")) {
+      line = line.replace(' ', '')
+      let b4 = line
+      let key = line.split('=')[0].split(' ').filter(Boolean)[1]
+      console.log(key)
+      b4 = line.replace('useRef(', `this.useRef('${key}',`)
+      line = b4
     }
 
 
