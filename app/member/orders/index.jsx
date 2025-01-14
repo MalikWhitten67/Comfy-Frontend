@@ -21,13 +21,11 @@ export default function() {
             filter: `for="${api.authStore.record.id}"`,
         });
 
-        setOrders(orders);
+        setOrders(orders);  
         setLoading(false);
-         
     }, []);
-
-    console.log("Loading state:", loading, orders); // Debugging loading state
-
+ 
+    console.log(loading)
     return (
         <SharedComponent title="Comfy - Member Orders">
             <div className="container lg:mx-12 lg:p-5">
@@ -35,14 +33,9 @@ export default function() {
                 <Switch key={loading}> 
                     <Match when={loading}>
                         <div className="text-center">
-                            <h3>Loading...</h3>
+                            <span className="loading loading-spinner loading-md"></span>
                         </div>
-                    </Match>
-                    <Match when={orders.length === 0}>
-                        <div className="text-center">
-                            <h3>No orders found</h3>
-                        </div>
-                    </Match>
+                    </Match> 
                     <Match when={orders.length > 0}>
                         <div className="row">
                             {orders.map((order) => {
@@ -72,6 +65,10 @@ export default function() {
                             })}
                         </div>
                     </Match>
+                    <Match when={orders.length === 0}>
+                        <p>No orders found</p>
+                    </Match>
+                    
                 </Switch>
             </div>
         </SharedComponent>

@@ -9,6 +9,7 @@ import ReviewProduct from "../../src/Components/ReviewProduct";
 export default function () {
     if (isServer) return <div></div>
     const cart = new Cart()
+    let [loading, setLoading] = useState(true)
     let [product, setProduct] = useState(Products.items.find((product) => product.id === params.id) ? {
         id: params.id,
         images: Products.items.find((product) => product.id === params.id).images,
@@ -28,9 +29,9 @@ export default function () {
         quantity: 1
     })
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
-    let [favorite, setFavorite] = useState((cart.favorites.find((item) => item.id === params.id) ? true : false))
+    const [favorite, setFavorite] = useState((cart.favorites.find((item) => item.id === params.id) ? true : false))
     const [error, setError] = useState(null)
-    const [loader, setLoader] = useState(false)
+    const [loader, setLoader] = useState(true)
     const [selectedSize, setSelectedSize] = useState(null)
 
 
@@ -47,8 +48,7 @@ export default function () {
     }
 
     useEffect(() => {
-        if (isServer) return
-        setLoader(true)
+        if (isServer) return 
         api.collection("products").getOne(params.id, {
             expand: 'reviews'
         }).then((data) => {
@@ -57,6 +57,8 @@ export default function () {
             setLoader(false)
         })
     }, [])
+
+    console.log("loading", loader)  
 
     const thumbnails = product.images.map((src, index) => (
         <button
@@ -173,7 +175,7 @@ export default function () {
                                 }}
                             >
                                 {
-                                    isOutofStock() ? 'Out of Stock' : 'Add to Bag'
+                                     loader ? 'Loading...' : isOutofStock() ? 'Out of Stock' : 'Add to Bag'
                                 }
                             </button>
                             <button
