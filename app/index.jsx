@@ -3,6 +3,7 @@ import { ProductCard } from "../src/Components/product-card"
 import SharedComponent from "../src/Components/SharedComponent"
 import products from "../src/Products" 
 export default function Page() { 
+  if(isServer) return <div></div>
   return (
      <SharedComponent title={"Comfy - Home"}> 
         <div className="min-h-screen bg-background">
