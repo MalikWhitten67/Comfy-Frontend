@@ -3,17 +3,21 @@
 import { Match, Switch, useState, useEffect } from 'vaderjs'
 import api from '../api'
 
-export default function CheckoutForm({ loading, amount }) { 
-    console.log(loading)
+export default function CheckoutForm({ loading, amount, checkOutId , onSubmit}) {  
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
+        name: api.authStore.isValid ? api.authStore.record.name : '',
+        email: api.authStore.isValid ? api.authStore.record.email : '',
         address: '',
     })
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        onSubmit()
+        await api.collection('checkout').update(checkOutId, {
+            ...formData 
+        })
+        .then(() => {
+            console.log('Checkout data updated', formData) 
+        })
     }
 
     function fetchCheckoutData() {

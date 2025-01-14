@@ -42,6 +42,7 @@ export default function SettingsPage() {
     const [activeTab, setActiveTab] = useState(isMobile === false  ? 'account' : '', false)
     const [formData, setFormData] = useState({ 
         phone: api.authStore.record?.phone || '',
+        name: api.authStore.record?.name || '',
         dateOfBirth:  api.authStore.record?.dob || null, 
         addresses: api.authStore.record?.addresses || [], 
     }, false) 

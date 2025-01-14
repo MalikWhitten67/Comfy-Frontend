@@ -9,7 +9,7 @@ export default function CheckoutPage() {
   const [showCashApp, setShowCashApp] = useState(false)
   let [loading, setLoading] = useState(false)
   const [checkoutData, setCheckoutData] = useState({ 
-    checkoutID: '',
+    checkoutID: params.id,
     username: '',
     address: '',
     expand:{
@@ -42,8 +42,7 @@ export default function CheckoutPage() {
       console.log('Data fetched', loading)
       setLoading(!loading)
     })
-  }, [])
-  console.log(checkoutData, loading)
+  }, []) 
   return (
     <html>
       <head>
@@ -57,6 +56,7 @@ export default function CheckoutPage() {
             <CheckoutForm
               loading={loading}
               amount={checkoutData.expand.order.total}
+              checkOutId={checkoutData.id}
               onSubmit={() => setShowCashApp(true)}
             />
           ) : (
