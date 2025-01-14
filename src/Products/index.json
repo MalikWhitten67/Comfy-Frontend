@@ -11,7 +11,8 @@
             ],
             "t style":"acid wash",
             "colors": 1,
-            "category":"T-shirts"
+            "category":"T-shirts",
+            "description":"This is a comfy t-shirt made from 100% cotton. It is acid washed and has a unique look."
         },
         {
             "id":"w67a416et61ve43",
@@ -24,7 +25,8 @@
                 "/public/Products/shirts/comfy_v2_back.png"
             ],
             "colors": 1,
-            "category":"T-shirts"
+            "category":"T-shirts",
+            "description":"This is a comfy t-shirt made from 100% cotton. It is acid washed and has a unique look."
           }
     ]
 }
