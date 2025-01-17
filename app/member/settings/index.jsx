@@ -153,7 +153,7 @@ export default function SettingsPage() {
     return (
          <SharedComponent title="Settings">
              <div className="flex min-h-screen xl:p-12 p-2 bg-white"> 
-                    <div className="xl:w-[25rem] w-full border-r min-h-screen xl:p-6
+                    <div className="xl:w-[25rem] lg:w-[25rem] w-full border-r min-h-screen xl:p-6
                      
                     ">
                         <h1 className="text-xl font-semibold mb-6">Settings</h1>
@@ -171,7 +171,7 @@ export default function SettingsPage() {
                             ))}
                         </nav>
                     </div> 
-                    <div className="xl:block hidden w-full">
+                    <div className="xl:block lg:block hidden w-full">
                     <Switch>
                         <Match when={activeTab === 'account' && isMobile === false}>
                            <Account formData={formData} setFormData={setFormData} />
@@ -184,7 +184,7 @@ export default function SettingsPage() {
                     </div>
                     
                 </div>
-                <div className="xl:hidden block w-full">
+                <div className="xl:hidden lg:hidden block w-full">
                         <Switch>
                             <Match when={activeTab === 'account'}>
                               <Modal>
