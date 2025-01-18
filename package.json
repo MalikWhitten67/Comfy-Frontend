@@ -10,6 +10,6 @@
     "postcss-cli": "^11.0.0",
     "printify-api": "^0.1.1",
     "tailwindcss": "^3.4.17",
-    "vaderjs": "2.0.4"
+    "vaderjs": "2.0.5"
   }
 }
