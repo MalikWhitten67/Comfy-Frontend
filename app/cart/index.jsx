@@ -39,7 +39,7 @@ export default function () {
       return
     }
     setLoading(true)
-    const { total} = await fetch(`${process.env.API_HOST}/calculate-order-amount`, {
+    const { total} = await fetch(`https://comfy-backend-vert.vercel.app/calculate-order-amount`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export default function () {
       owner: api.authStore.record.id
     }
 
-    const { orderID } = await fetch(`${process.env.API_HOST}/createOrder`, {
+    const { orderID } = await fetch(`https://comfy-backend-vert.vercel.app/createOrder`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export default function () {
 
 
 
-    const { checkoutID } = await fetch(`${process.env.API_HOST}/createCheckout`, {
+    const { checkoutID } = await fetch(`https://comfy-backend-vert.vercel.app/createCheckout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export default function () {
 
     console.log(checkoutID)
 
-    await fetch(`${process.env.API_HOST}/create-checkout-session`, {
+    await fetch(`https://comfy-backend-vert.vercel.app/create-checkout-session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
