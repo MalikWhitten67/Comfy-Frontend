@@ -1,54 +1,32 @@
 //@ts-nocheck
-import favorites from "../../app/favorites";
 import api from "../api";
 
 class Cart {
     events: any;
     items: any;
     favorites: any;
-    worker: any;
 
     constructor() { 
         if (!window.events) window.events = {};
         if(!window.items)
             window.items =  globalThis.localStorage ? JSON.parse(globalThis.localStorage.getItem('cart')) || [] : [];
-        if(!window.favorites)
+            if(!window.favorites)
             window.favorites =  globalThis.localStorage ? JSON.parse(globalThis.localStorage.getItem('favorites')) || [] : [];
-        
+    
+
         this.events = window.events;
         this.favorites = window.favorites;
         this.items = window.items;
 
-        // Save cart and favorites on unload
-        window.hasRegisteredUnload = false;
         
-        // Register the service worker
-        if ('serviceWorker' in navigator && !window.hasRegisteredUnload) {
-             window.hasRegisteredUnload = true;
-        
-            // Register the service worker
-             this.worker = new Worker(new URL('/src/worker.js', import.meta.url));
-
-              
-
-            this.worker.onmessage = (event) => {
-                console.log('Worker said:', event.data);
-            };
-        }
-
-        window.addEventListener("beforeunload", () => { 
-            
-        });
-
-         
     }
 
-    async saveCartToServer() { 
+    async saveCartToServer() {
         try {
             // Fetch existing cart for the current user
             let cart = await api
-                .collection("carts")
-                .getFirstListItem(`owner="${api.authStore.model.id}"`);
+                .collection("cart")
+                .getFirstListItem(`owner.id="${api.authStore.model.id}"`);
 
             const data = {
                 items: JSON.stringify(this.items),
@@ -56,15 +34,17 @@ class Cart {
                 owner: api.authStore.model.id,
             };
 
-            if (cart.items.length > 0) { 
-                console.log("Updating existing cart...");
-            } else { 
-                console.log("Creating new cart...");
+            if (cart) {
+                // Update existing cart
+                await api.collection("cart").update(cart.id, data);
+            } else {
+                // Create new cart
+                await api.collection("cart").create(data);
             }
 
             console.log("Cart successfully saved to server.");
         } catch (error) {
-            console.error("Error saving cart to server:", error.data);
+            console.error("Error saving cart to server:", error);
         }
     }
 
@@ -84,11 +64,10 @@ class Cart {
             });
         }
     }
-
-    clear() { 
+    clear(){ 
         this.triggerEvent("cartCleared", this.items);
-        this.items = [];
-        this.favorites = [];
+        this.items = []
+        this.favorites = []
         window.items = this.items;
         window.favorites = this.favorites;
         this.saveCartToLocalStorage();
