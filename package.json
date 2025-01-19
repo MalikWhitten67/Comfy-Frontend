@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "vaderjs prod",
+    "build": "curl -fsSL https://bun.sh/install | bash && export PATH=$HOME/.bun/bin:$PATH && bun install && bun run vaderjs prod",
     "dev": "vaderjs dev"
   },
   "dependencies": {
