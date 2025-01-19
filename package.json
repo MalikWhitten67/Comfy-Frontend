@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "bun run vaderjs prod",
-    "dev": "vaderjs dev"
+    "dev": "vaderjs dev" 
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
