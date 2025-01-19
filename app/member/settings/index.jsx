@@ -42,7 +42,6 @@ export default function SettingsPage() {
     const [activeTab, setActiveTab] = useState(isMobile === false  ? 'account' : '', false)
     const [formData, setFormData] = useState({ 
         phone: api.authStore.record?.phone || '',
-        name: api.authStore.record?.name || '',
         dateOfBirth:  api.authStore.record?.dob || null, 
         addresses: api.authStore.record?.addresses || [], 
     }, false) 
@@ -152,12 +151,12 @@ export default function SettingsPage() {
 
     return (
          <SharedComponent title="Settings">
-             <div className="flex min-h-screen xl:p-12 p-2 bg-white"> 
+             <div className="flex min-h-screen xl:p-12 lg:p-12 p-2 bg-white"> 
                     <div className="xl:w-[25rem] lg:w-[25rem] w-full border-r min-h-screen xl:p-6
                      
                     ">
                         <h1 className="text-xl font-semibold mb-6">Settings</h1>
-                        <nav className="space-y-1">
+                        <nav className="space-y-1 mr-2 ">
                             {sidebarItems.map((item) => (
                                 <button
                                     key={item.id}
@@ -171,7 +170,7 @@ export default function SettingsPage() {
                             ))}
                         </nav>
                     </div> 
-                    <div className="xl:block lg:block hidden w-full">
+                    <div className="xl:block  lg:block lg:mx-12 hidden w-full">
                     <Switch>
                         <Match when={activeTab === 'account' && isMobile === false}>
                            <Account formData={formData} setFormData={setFormData} />
