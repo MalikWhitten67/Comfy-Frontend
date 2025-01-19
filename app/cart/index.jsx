@@ -78,7 +78,7 @@ export default function () {
 
     console.log(checkoutID)
 
-    await fetch(`http://localhost:3000/create-checkout-session`, {
+    await fetch(`${process.env.API_HOST}/create-checkout-session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
