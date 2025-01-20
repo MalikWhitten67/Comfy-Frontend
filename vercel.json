@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/auth/login",
-            "destination": "/auth/login/index.html"
+            "destination": "/auth/login/index.html "
         },
         {
             "source": "/auth/register",
