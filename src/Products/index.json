@@ -7,12 +7,16 @@
             "material":"cotton",
             "mainImage":"/public/Products/shirts/comfy_v1.jpeg",
             "images":[
-                "/public/Products/shirts/comfy_v1.jpeg"
+                "/public/Products/shirts/comfy_v1.jpeg",
+                "/public/models/rev1_acid/model1.webp",
+                "/public/models/rev1_acid/model2.webp",
+                "/public/models/rev1_acid/model3.webp",
+                "/public/models/rev1_acid/model4.webp"
             ],
+            "description":"The Comfy Rev 1 Acid T was crafted with a sleek, minimalist design. One of Malik's frustrations with current brand trends is their inability to align with his unique aesthetic. This piece embodies the concept of being one-of-a-kind—symbolizing individuality that cannot be replicated. Made with premium fabric and top-tier printing, it’s a perfect blend of style and quality.",
             "t style":"acid wash",
             "colors": 1,
-            "category":"T-shirts",
-            "description":"This is a comfy t-shirt made from 100% cotton. It is acid washed and has a unique look."
+            "category":"T-shirts"
         },
         {
             "id":"w67a416et61ve43",
@@ -25,8 +29,7 @@
                 "/public/Products/shirts/comfy_v2_back.png"
             ],
             "colors": 1,
-            "category":"T-shirts",
-            "description":"This is a comfy t-shirt made from 100% cotton. It is acid washed and has a unique look."
+            "category":"T-shirts"
           }
     ]
 }
