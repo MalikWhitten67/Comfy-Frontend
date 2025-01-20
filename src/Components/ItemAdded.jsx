@@ -71,6 +71,7 @@ export default function () {
                 <p className="mt-1 text-sm text-gray-500">Quantity: {c.items.filter(i => i.id === product.id).length}</p>
                 <p className="mt-1 text-sm">Size: {product.size}</p>
                 <p className="mt-1 font-medium">${product.price}</p>
+                <p className="mt-1 text-sm flex hero gap-2">Color  <span className="h-4 w-4 rounded-full inline-block" style={{ backgroundColor: product.color }}></span></p>
               </Match>
             </Switch>
           </div>

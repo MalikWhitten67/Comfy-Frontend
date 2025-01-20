@@ -2,6 +2,10 @@ import api from "../../src/api";
 import Navbar from "../../src/Components/nav"
 import Cart from "../../src/Sdk"
 import { useState, useEffect, Switch, Match } from "vaderjs"
+var urls = {
+  dev: "http://localhost:3000",
+  prod: "https://comfy-backend-vert.vercel.app"
+}
 export default function () {
   const cart = new Cart()
   let [items, setItems] = useState(cart.items);
@@ -39,7 +43,7 @@ export default function () {
       return
     }
     setLoading(true)
-    const { total} = await fetch(`https://comfy-backend-vert.vercel.app/calculate-order-amount`, {
+    const { total} = await fetch(`http://localhost:3000/calculate-order-amount`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,37 +52,47 @@ export default function () {
     })
     .then((res) => res.json())
  
+    items = items.map(item => {
+      return {
+        id: item.id,
+        quantity: item.quantity,
+        size: item.size,
+        price: item.price,
+        isPreOrder: item.isPreOrder,
+        name: item.name,
+        mainImage: item.mainImage,
+        category: item.category,
+        color: item.color
+      }
+    })
     const order = {
       products: items,
       subtotal:  0,
       tax: 0,
       total: total,
-      owner: api.authStore.record.id
+      owner: api.authStore.record.id,
+      isPreOrder: items.some(item => item.isPreOrder)
     }
+    console.log(order)
 
-    const { orderID } = await fetch(`https://comfy-backend-vert.vercel.app/createOrder`, {
+    const { orderID } = await fetch(`${urls.prod}/createOrder`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(order),
     }).then((res) => res.json())
-    
- 
+     
 
-
-
-    const { checkoutID } = await fetch(`https://comfy-backend-vert.vercel.app/createCheckout`, {
+    const { checkoutID } = await fetch(`${urls.prod}/createCheckout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ orderID }),
     }).then((res) => res.json())
-
-    console.log(checkoutID)
-
-    await fetch(`https://comfy-backend-vert.vercel.app/create-checkout-session`, {
+ 
+    await fetch(`${urls.prod}/create-checkout-session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -92,9 +106,9 @@ export default function () {
       return res.json()
     }).catch((error) => {
       console.log(error)
-    }).then((data) => {
-       cart.clear()
+    }).then((data) => { 
        window.location.href = data.url
+       cart.clear()  
     })
 
     setLoading(false) 
@@ -133,10 +147,7 @@ export default function () {
   }
   var date = new Date();
 
-  // typically 5-7 business days
-
-  date.setDate(date.getDate() + 7)
-  date = date.toDateString()
+  
 
   return (
     <html>

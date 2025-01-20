@@ -5,7 +5,7 @@ interface ProductCardProps {
   name: string
   price: number
   category: string
-  colors: number
+  colors: [],
   mainImage: string
   images: string[]
 }
@@ -26,7 +26,7 @@ export function ProductCard({ id, name, price, category, colors, mainImage }: Pr
           <p className="text-lg font-semibold">${price}</p>
         </div>
         <p className="text-sm text-base-content/70">{category}</p>
-        <p className="text-sm text-base-content/70">{colors} Colors</p>
+        <p className="text-sm text-base-content/70">{colors.length} Colors</p>
       </div>
     </A>
   )
