@@ -40,10 +40,9 @@ export default function () {
 
     if (api.authStore.isValid === false) {
       window.location.href = '/auth/login'
-      return
-    }
+    } 
     setLoading(true)
-    const { total} = await fetch(`http://localhost:3000/calculate-order-amount`, {
+    const { total} = await fetch(`${urls.prod}/calculate-order-amount`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -51,6 +50,7 @@ export default function () {
       body: JSON.stringify({ items }),
     })
     .then((res) => res.json())
+    if(!total) return setLoading(false)
  
     items = items.map(item => {
       return {
@@ -82,6 +82,8 @@ export default function () {
       },
       body: JSON.stringify(order),
     }).then((res) => res.json())
+
+    if(!orderID) return setLoading(false)
      
 
     const { checkoutID } = await fetch(`${urls.prod}/createCheckout`, {
@@ -90,7 +92,9 @@ export default function () {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ orderID }),
-    }).then((res) => res.json())
+    }).then((res) => res.json()) 
+
+    if(!checkoutID) return setLoading(false)
  
     await fetch(`${urls.prod}/create-checkout-session`, {
       method: 'POST',
@@ -106,9 +110,9 @@ export default function () {
       return res.json()
     }).catch((error) => {
       console.log(error)
-    }).then((data) => { 
-       window.location.href = data.url
-       cart.clear()  
+    }).then((data) => {  
+      window.location.href = data.url;
+      cart.clear()
     })
 
     setLoading(false) 
