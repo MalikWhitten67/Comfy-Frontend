@@ -20,19 +20,19 @@ export default function AnimatedSearch() {
  
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
+    <div className="relative w-full lg:max-w-2xl mx-auto">
       {/* Main search input */}
       <div className={`
         transition-all duration-300 ease-in-out
         ${isFocused 
           ? 'fixed top-0 left-0 w-full h-screen bg-white z-50' 
-          : 'relative'
+          : ''
         }
       `}>
         <div className={`
           relative mx-auto
           ${isFocused 
-            ? 'max-w-2xl px-4 pt-4' 
+            ? 'lg:max-w-2xl px-4 pt-4' 
             : ''
           }
         `}>
