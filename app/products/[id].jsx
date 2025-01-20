@@ -21,7 +21,8 @@ export default function () {
         sizes: [],
         stock:[], 
         colors: [],
-        quantity: 1
+        quantity: 1,
+        isForSale: false
     } : {
         id: 0, images: [], name: '', price: 0, sizes: [], stock: [], colors: [], quantity: 1
     })
@@ -43,18 +44,30 @@ export default function () {
     ]
 
     function isOutofStock() {   
-        if(product.stock.length < 1) return true;
-        console.log( product.stock.every((stock)=> stock.quantity === 0))
+        if(product.stock.length < 1) return true; 
         return  product.stock.every((stock)=> stock.quantity === 0)
     }
-
-    console.log(loader)
-
+ 
     useEffect(() => {
         if (isServer) return 
-        api.collection("products").getOne(params.id).then((data) => {
-            console.log(data)
-            setProduct({ ...product, sizes: data.sizes, stock: data.stock , colors: data.colors})
+        api.collection("products").getOne(params.id, {
+            expand:'reviews',
+            headers:{
+                // cache for 20 minutes
+                'Cache-Control': 'max-age=1200'
+            }
+        }).then((data) => { 
+            api.collection("reviews").getFullList({
+                batch: Number.MAX_SAFE_INTEGER,
+                expand: 'author',
+                headers:{
+                    // cache for 20 minutes
+                    'Cache-Control': 'max-age=1200'
+                }
+            }).then((d)=>{
+                setProduct({ ...product, sizes: data.sizes, stock: data.stock , colors: data.colors, reviews: d, isForSale: data.isForSale})
+            })
+             
             
         }).finally(()=>{
             setLoader(false)
@@ -181,6 +194,9 @@ export default function () {
                                             return
                                         } 
 
+                                        if(!product.isForSale){
+                                            return;
+                                        }
                                         switch (true) {
                                             case !product.sizes:
                                                 setError('size')
@@ -197,7 +213,7 @@ export default function () {
                                     }}
                                 >
                                     {
-                                        loader ? 'Loading....' : isOutofStock() ? 'Pre Order' : 'Add to Bag'
+                                        loader ? 'Loading....' : product.isForSale === false ? 'Coming Soon' : isOutofStock() ? 'Pre Order' : 'Add to Bag'
                                     }
                                 </button>
                                 <button
@@ -228,7 +244,8 @@ export default function () {
                                     </button>
                                 </Match>
                                 <Match when={product.reviews.length > 0}>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex flex-col gap-2 mb-2">
+                                        <div className="flex items-center gap-2">
                                         <button className="text-sm text-gray-600 underline" onClick={() => document.getElementById('reviewProduct').showModal()}>
                                             Write a review
                                         </button>
@@ -238,10 +255,21 @@ export default function () {
                                         <span className="text-sm text-gray-600">
                                             {product.reviews.length} reviews
                                         </span>
+                                        </div>
+                                        {
+                                        loader ? 'Loading...' : product.reviews.map((review) => (
+                                            <div key={review.id} className="border-b py-4">
+                                                <h4 className="font-semibold">{review.expand.author.name} - <span
+                                                className="text-yellow-500"
+                                                > {new Array(review.overal_rating).fill('★').join('')}</span></h4>
+                                                <p className="text-sm text-gray-600">{review.description}</p> 
+                                                <p className="text-sm text-gray-600">Size: {review.size_you_normally_wear}</p>
+                                            </div>
+                                        ))
+                                     }
                                     </div>
-                                    <button className="text-sm text-gray-600 underline">
-                                        Read all reviews
-                                    </button>
+
+                                     
                                 </Match>
                             </Switch>
                         </div>
@@ -249,6 +277,9 @@ export default function () {
                             {/* Shipping Info */}
                             <div className="border-t pt-6">
                                 <h3 className="mb-2 font-semibold">Shipping</h3>
+                                <p>
+                                    Please allow 1-2 weeks for shipping.
+                                </p>
                                 <p className="text-sm text-gray-600">
                                     You&apos;ll see our shipping options at checkout.
                                 </p>
@@ -267,7 +298,7 @@ export default function () {
                     </div>
                 </div>
                 <ItemAdded />
-                <ReviewModal product={product} />
+                <ReviewModal product={product}  setProduct={setProduct} />
         </SharedComponent>
 
     )
