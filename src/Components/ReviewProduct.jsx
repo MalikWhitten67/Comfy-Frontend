@@ -39,12 +39,29 @@ export default function ReviewModal({ product }) {
    
    }
 
+   function resetForm() {
+    setRating(0)
+    setReviewTitle('')
+    setReviewText('')
+    setProductFit('')
+    setComfort('')
+    setRecommend('')
+    setProductSize('')
+    setTermsAccepted(false)
+   }
+
       
   return (
     <dialog id="reviewProduct" className="modal modal-bottom sm:modal-middle">
       <div className="modal-box max-w-2xl">
         {/* Close Button */}
-        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+        
+        onClick={() => {
+            resetForm()
+            document.getElementById('reviewProduct').close()
+        }}
+        >
            X
         </button>
 
