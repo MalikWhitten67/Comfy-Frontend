@@ -91,7 +91,7 @@ export default function () {
         </button>
     ))
     return (
-        <SharedComponent title="Comfy - Product">
+        <SharedComponent title={`Comfy - ${product.name}`} description={product.description} image={product.images[0]} url={`https://comfy.vercel.app/products/${product.id}`} >
             <div className="mx-auto max-w-7xl px-4 py-8">
                 <div className="grid gap-8 md:grid-cols-2">
                     {/* Product Images */}
