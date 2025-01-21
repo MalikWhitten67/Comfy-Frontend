@@ -60,6 +60,7 @@ export default function () {
             api.collection("reviews").getFullList({
                 batch: Number.MAX_SAFE_INTEGER,
                 expand: 'author',
+                filter: `product="${params.id}"`,
                 headers:{
                     // cache for 20 minutes
                     'Cache-Control': 'max-age=1200'
@@ -133,9 +134,13 @@ export default function () {
                         <div className="flex flex-col gap-6">
                             <div>
                                 <div className="mb-2 flex items-center gap-2">
-                                    <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs">
+                                     {
+                                        product.reviews.length > 0 && product.reviews.reduce((acc, review) => acc + review.overal_rating, 0) / product.reviews.length > 0 ? 
+                                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs">
                                         ★ Highly Rated
                                     </span>
+ : ''
+                                     }
                                 </div>
                                 <h1 className="text-3xl font-bold">{product.name}</h1>
                                 <p className="text-xl text-gray-500">${product.price}</p>
@@ -242,14 +247,20 @@ export default function () {
                             <Switch>
                                 <Match when={product.reviews.length === 0}>
                                     <p className="text-sm text-gray-600">No reviews yet.</p>
-                                    <button className="text-sm text-gray-600 underline" onClick={() => document.getElementById('reviewProduct').showModal()}>
+                                    <button className="text-sm text-gray-600 underline"  onClick={() => {
+                                            if(!api.authStore.isValid) return alert('Please login to write a review')
+                                            document.getElementById('reviewProduct').showModal()
+                                        }}>
                                         Be the first to review
                                     </button>
                                 </Match>
                                 <Match when={product.reviews.length > 0}>
                                     <div className="flex flex-col gap-2 mb-2">
                                         <div className="flex items-center gap-2">
-                                        <button className="text-sm text-gray-600 underline" onClick={() => document.getElementById('reviewProduct').showModal()}>
+                                        <button className="text-sm text-gray-600 underline" onClick={() => {
+                                            if(!api.authStore.isValid) return alert('Please login to write a review')
+                                            document.getElementById('reviewProduct').showModal()
+                                        }}>
                                             Write a review
                                         </button>
                                         <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs">
