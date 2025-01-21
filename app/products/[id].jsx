@@ -64,7 +64,7 @@ export default function () {
                     // cache for 20 minutes
                     'Cache-Control': 'max-age=1200'
                 }
-            }).then((d)=>{
+            }).then((d)=>{ 
                 setProduct({ ...product, sizes: data.sizes, stock: data.stock , colors: data.colors, reviews: d, isForSale: data.isForSale})
             })
              
@@ -259,7 +259,7 @@ export default function () {
                                         {
                                         loader ? 'Loading...' : product.reviews.map((review) => (
                                             <div key={review.id} className="border-b py-4">
-                                                <h4 className="font-semibold">{review.expand.author.name} - <span
+                                                <h4 className="font-semibold">{""}- <span
                                                 className="text-yellow-500"
                                                 > {new Array(review.overal_rating).fill('★').join('')}</span></h4>
                                                 <p className="text-sm text-gray-600">{review.description}</p> 
