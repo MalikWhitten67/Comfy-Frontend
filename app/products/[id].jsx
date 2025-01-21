@@ -150,11 +150,14 @@ export default function () {
                                             <button
                                                 key={size}
                                                 onClick={() => {
-                                                    setSelectedSize(size)
-                                                }}
-                                                className={`rounded-full   px-6 py-4 ${error && error === 'size' ? 'border border-red-500' : selectedSize === size ? 'border-black border' : 'hover:border-black border border-gray-300'
+                                                    if(product.isForSale) 
+                                                        setSelectedSize(size);
+                                                }} 
+                                                className={`rounded-full   px-6 py-4 ${error && error === 'size' ? 'border border-red-500' : selectedSize === size ? 'border-black border' : product.isForSale ?  'hover:border-black border border-gray-300' : ''
                                                     }
-                                                    
+                                                     ${
+                                                        !product.isForSale && 'bg-gray-200'
+                                                     }
                                                     }
                                                     `}
                                             >
