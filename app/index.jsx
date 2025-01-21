@@ -4,7 +4,7 @@ import SharedComponent from "../src/Components/SharedComponent"
 import products from "../src/Products" 
 export default function Page() { 
   return (
-     <SharedComponent title={"Comfy - Home"}> 
+     <SharedComponent title={"Comfy - Home"} description={"Comfy - One of One - uniquely distinct cannot be replicated"}>
         <div className="min-h-screen bg-background">
            
           <main className="container mx-auto px-4 py-8">
