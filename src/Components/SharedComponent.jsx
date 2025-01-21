@@ -6,10 +6,20 @@ export default function({title, description, children}){
         <html>
             <head>
                 <title>{title || 'Comfy'}</title>
-                <meta name="description" content="Comfy - One of One" />
+                <link rel="preload" href="/public/Comfy_logo_V2.png"  as="image" type="image/png" crossorigin />
+                <link rel="preload" href="/public/models/rev1_acid/model1.webp" as="image" type="image/webp" crossorigin />
+                <link rel="preload" href="/public/models/rev1_acid/model2.webp" as="image" type="image/webp" crossorigin />
+                <link rel="preload" href="/public/models/rev1_acid/model3.webp" as="image" type="image/webp" crossorigin />
+                <link rel="preload" href="/public/models/rev1_acid/model4.webp" as="image" type="image/webp" crossorigin />
+                <link rel="preload" href="/public/shirts/comfy_v1.jpeg"  as="image" type="image/jpeg" crossorigin />
+                <link rel="preload" href="/public/shirts/comfy_v2_back.jpeg"  as="image" type="image/jpeg" crossorigin />
+                <link rel="preload" href="/public/shirts/comfy_v2.png"  as="image" type="image/png" crossorigin />
+                <link rel="preload" href="/public/shirts/shirt.webp"  as="image" type="image/webp" crossorigin />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-                {description && <meta name="description" content={description} />}
+                <link rel="shortcut icon" href="/public/Comfy_logo_V2.png" type="image/x-icon" />
+                {description && <meta name="description" content={description} />} 
+                
             </head>
             <body>
                 <Navbar />
