@@ -48,7 +48,8 @@ export default function () {
         return  product.stock.every((stock)=> stock.quantity === 0)
     }
  
-    useEffect(() => { 
+    useEffect(() => {
+        if (isServer) return 
         api.collection("products").getOne(params.id, {
             expand:'reviews',
             headers:{
@@ -59,12 +60,12 @@ export default function () {
             api.collection("reviews").getFullList({
                 batch: Number.MAX_SAFE_INTEGER,
                 expand: 'author',
-                filter: `product="${params.id}"`,
                 headers:{
                     // cache for 20 minutes
                     'Cache-Control': 'max-age=1200'
                 }
-            }).then((d)=>{ 
+            }).then((d)=>{
+                console.log(d)
                 setProduct({ ...product, sizes: data.sizes, stock: data.stock , colors: data.colors, reviews: d, isForSale: data.isForSale})
             })
              
@@ -89,23 +90,8 @@ export default function () {
             />
         </button>
     ))
-
-    function buyNow(){
-        if(product.id == "4ax9phi9m75dx2w"){
-            switch (true){
-                case selectedColor == "pink":
-                    window.location.href = "https://buy.stripe.com/4gw7uE1SW9pPdosfYZ"
-                    break;
-                case selectedColor == "black":
-                    window.location.href = "https://buy.stripe.com/dR64iscxA59zbgk6oo"
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
     return (
-        <SharedComponent title={`Comfy - ${product.name}`} description={product.description} image={product.images[0]} url={`https://comfy.vercel.app/products/${product.id}`} >
+        <SharedComponent title="Comfy - Product">
             <div className="mx-auto max-w-7xl px-4 py-8">
                 <div className="grid gap-8 md:grid-cols-2">
                     {/* Product Images */}
@@ -148,13 +134,9 @@ export default function () {
                         <div className="flex flex-col gap-6">
                             <div>
                                 <div className="mb-2 flex items-center gap-2">
-                                     {
-                                        product.reviews.length > 0 && product.reviews.reduce((acc, review) => acc + review.overal_rating, 0) / product.reviews.length > 0 ? 
-                                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs">
+                                    <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs">
                                         ★ Highly Rated
                                     </span>
- : ''
-                                     }
                                 </div>
                                 <h1 className="text-3xl font-bold">{product.name}</h1>
                                 <p className="text-xl text-gray-500">${product.price}</p>
@@ -169,14 +151,11 @@ export default function () {
                                             <button
                                                 key={size}
                                                 onClick={() => {
-                                                    if(product.isForSale) 
-                                                        setSelectedSize(size);
-                                                }} 
-                                                className={`rounded-full   px-6 py-4 ${error && error === 'size' ? 'border border-red-500' : selectedSize === size ? 'border-black border' : product.isForSale ?  'hover:border-black border border-gray-300' : ''
+                                                    setSelectedSize(size)
+                                                }}
+                                                className={`rounded-full   px-6 py-4 ${error && error === 'size' ? 'border border-red-500' : selectedSize === size ? 'border-black border' : 'hover:border-black border border-gray-300'
                                                     }
-                                                     ${
-                                                        !product.isForSale && 'bg-gray-200'
-                                                     }
+                                                    
                                                     }
                                                     `}
                                             >
@@ -209,16 +188,35 @@ export default function () {
                             </div>
                             {/* Add to Bag & Favorite */}
                             <div className="flex flex-col gap-4">
-                                <Switch>
-                                    <Match when={product.id === "4ax9phi9m75dx2w"}>
-                                        <button className="w-full rounded-full bg-black px-6 py-4 text-white hover:bg-gray-800"
-                                        onClick={buyNow}
-                                        >
-                                            Pre-Order
-                                        </button>
-                                    </Match>
-                                </Switch>
-                                
+                                <button className="w-full rounded-full bg-black px-6 py-4 text-white hover:bg-gray-800"
+                                    onClick={() => {
+                                        if (product.canBuyMultiple == false && cart.items.find((item) => item.id === product.id)) {
+                                            alert('You can only buy one of this product')
+                                            return
+                                        } 
+
+                                        if(!product.isForSale){
+                                            return;
+                                        }
+                                        switch (true) {
+                                            case !product.sizes:
+                                                setError('size')
+                                                setTimeout(() => setError(null), 2000)
+                                                return
+                                            case !product.colors:
+                                                setError('color')
+                                                setTimeout(() => setError(null), 2000)
+                                                return
+                                        } 
+                                        cart.addItem({ ...product, size: selectedSize, color: selectedColor,  isPreOrder: isOutofStock() })
+                                       
+                                        document.getElementById('item-added').showModal()
+                                    }}
+                                >
+                                    {
+                                        loader ? 'Loading....' : product.isForSale === false ? 'Coming Soon' : isOutofStock() ? 'Pre Order' : 'Add to Bag'
+                                    }
+                                </button>
                                 <button
                                     onClick={() => {
                                         cart.toggleFavoriteItem(product) 
@@ -242,20 +240,14 @@ export default function () {
                             <Switch>
                                 <Match when={product.reviews.length === 0}>
                                     <p className="text-sm text-gray-600">No reviews yet.</p>
-                                    <button className="text-sm text-gray-600 underline"  onClick={() => {
-                                            if(!api.authStore.isValid) return alert('Please login to write a review')
-                                            document.getElementById('reviewProduct').showModal()
-                                        }}>
+                                    <button className="text-sm text-gray-600 underline" onClick={() => document.getElementById('reviewProduct').showModal()}>
                                         Be the first to review
                                     </button>
                                 </Match>
                                 <Match when={product.reviews.length > 0}>
                                     <div className="flex flex-col gap-2 mb-2">
                                         <div className="flex items-center gap-2">
-                                        <button className="text-sm text-gray-600 underline" onClick={() => {
-                                            if(!api.authStore.isValid) return alert('Please login to write a review')
-                                            document.getElementById('reviewProduct').showModal()
-                                        }}>
+                                        <button className="text-sm text-gray-600 underline" onClick={() => document.getElementById('reviewProduct').showModal()}>
                                             Write a review
                                         </button>
                                         <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs">
@@ -268,7 +260,7 @@ export default function () {
                                         {
                                         loader ? 'Loading...' : product.reviews.map((review) => (
                                             <div key={review.id} className="border-b py-4">
-                                                <h4 className="font-semibold">{""}- <span
+                                                <h4 className="font-semibold">{review.expand.author.name} - <span
                                                 className="text-yellow-500"
                                                 > {new Array(review.overal_rating).fill('★').join('')}</span></h4>
                                                 <p className="text-sm text-gray-600">{review.description}</p> 
