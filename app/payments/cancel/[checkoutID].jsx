@@ -5,8 +5,8 @@ export default function () {
     return (
         <html>
             <head>
-                <title>Comfy - Payment Success</title>
-                <meta name="description" content="Comfy - Payment Success" />
+                <title>Comfy - Payment Cancelled</title>
+                <meta name="description" content="Comfy - Payment Cancelled" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </head>
             <body>
