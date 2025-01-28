@@ -14,7 +14,8 @@ export default function({title, description, children}){
                 <link rel="preload" href="/public/Products/shirts/comfy_v1.jpeg"  as="image" type="image/jpeg" crossorigin />
                 <link rel="preload" href="/public/Products/shirts/comfy_v2_back.jpeg"  as="image" type="image/jpeg" crossorigin />
                 <link rel="preload" href="/public/Products/shirts/comfy_v2.png"  as="image" type="image/png" crossorigin />
-                <link rel="preload" href="/public/Products/shirts/shirt.webp"  as="image" type="image/webp" crossorigin />
+                <link rel="preload" href="/public/Products/shirts/shirt.webp"  as="image" type="image/webp" crossorigin /> 
+                <link rel="preload" href="/public/hoodies/comfy_hoodie_v1.png"  as="image" type="image/png" crossorigin />
 
                 <meta name="description" content="Comfy - One of One" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
