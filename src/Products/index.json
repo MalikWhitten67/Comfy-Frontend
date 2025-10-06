@@ -78,10 +78,35 @@
                 }
             ],
             "category":"T-shirts"
+        },{
+            "id":"3p7z5g2lbq92m13",
+            "name":"Comfy Rev 2 Acid - T",
+            "price":50,
+            "material":"cotton",
+            "mainImage":"/public/Products/comfy rev2 acid t.png",
+            "images":[
+                "/public/Products/shirts/comfy-rev2t.png"
+            ],
+            "description":"",
+            "t style":"basic",
+            "colors": [
+                {
+                    "color":"black",
+                    "#hex":"#000000",
+                    "image":"/public/Products/shirts/comfy_v1.jpeg"
+                },
+                {
+                    "color":"white",
+                    "#hex":"#FFFFF",
+                    "image":"/public/Products/shirts/comfy_v1_pink.jpeg"
+                }
+            ],
+            "category":"T-shirts"
         }
         
     ]
 }
+
 
 
 
