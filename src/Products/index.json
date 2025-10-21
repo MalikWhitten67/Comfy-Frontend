@@ -49,7 +49,7 @@
          {
             "id":"155452ocfe6l68t",
             "name":"Comfy Rev 1 Hoodie",
-            "price":50,
+            "price":65,
             "material":"cotton",
             "mainImage":"/hoodies/comfy_v1.png",
             "images":[
@@ -104,6 +104,7 @@
         } 
     ]
 }
+
 
 
 
