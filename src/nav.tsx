@@ -41,7 +41,7 @@ export default function Navbar() {
       {/* Top Bar */}
       <div class="bg-base-200 px-4 py-2 text-sm">
         <div class="flex items-center justify-end gap-4">
-          <a href="#" class="hover:underline">Help</a>
+          <a href="/help" class="hover:underline">Help</a>
           <span>|</span>
 
           <Switch>
