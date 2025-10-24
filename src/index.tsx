@@ -11,6 +11,7 @@ import Favorites from "../app/favorites"
 import Orders from "../app/member/orders"
 import About from "../app/about"
 import Settings from "../app/member/settings/index.jsx"
+import Help from "../app/help"
 const root = document.getElementById('root');
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
@@ -31,6 +32,7 @@ render(
           <Route path={"/member/orders"} component={Orders} />
           <Route path={"/about"} component={About} />
           <Route path={"/member/settings"} component={Settings} />
+          <Route path={"/help"} component={Help} />
         </Router>
     ),
     root!,
