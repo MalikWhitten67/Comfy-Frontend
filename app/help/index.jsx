@@ -1,6 +1,6 @@
 import { createSignal, onMount, Show, For } from "solid-js";
 import SharedComponent from "../../src/Components/SharedComponent";
-import { helpArticles, categories } from "../../src/searchData";
+import { helpArticles, categories } from "../../src/searchdata";
 import api from "../../src/api";
 
 export default function HelpPage() {

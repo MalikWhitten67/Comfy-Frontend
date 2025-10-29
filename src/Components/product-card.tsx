@@ -10,21 +10,36 @@ interface ProductCardProps {
 
 export function ProductCard({ id, name, price, category, colors, mainImage }: ProductCardProps) {
   return (
-    <a href={`/products/${id}`} class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-      <figure class="aspect-square">
+    // 'group' allows us to create hover effects on child elements
+    <a href={`/products/${id}`} className="group block overflow-hidden">
+      
+      {/* --- IMAGE CONTAINER --- */}
+      <div className="aspect-square overflow-hidden rounded-md bg-muted"> {/* Added rounded corners */}
         <img
           src={mainImage}
           alt={name}
-          class="object-cover w-full h-full"
+          className="h-full w-full object-cover object-center transition-transform duration-300 ease-in-out group-hover:scale-105" // Added hover effect
         />
-      </figure>
-      <div class="card-body p-4">
-        <div class="flex justify-between gap-5 items-center">
-          <h3 class="card-title text-lg">{name}</h3>
-          <p class="text-lg font-semibold">${price}</p>
+      </div>
+
+      {/* --- TEXT CONTENT --- */}
+      <div className="mt-3"> {/* Creates clean space between image and text */}
+        
+        {/* Primary Info: Name and Price */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-base font-semibold text-foreground">
+            {name}
+          </h3>
+          <p className="text-base font-medium text-foreground">
+            ${price}
+          </p>
         </div>
-        <p class="text-sm text-base-content/70">{category}</p>
-        <p class="text-sm text-base-content/70">{colors.length} Colors</p>
+
+        {/* Secondary Info: Category & Colors combined */}
+        <p className="mt-1 text-sm text-muted-foreground">
+          {category} &bull; {colors.length} Colors
+        </p>
+
       </div>
     </a>
   )

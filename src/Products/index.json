@@ -1,112 +1,117 @@
 {
     "collections": [
         {
-            "id":"collection1",
-            "name":"Comfy Rev 1",
-            "items":[
+            "id": "collection1",
+            "name": "Comfy Rev 1",
+            "items": [
                 "4ax9phi9m75dx2w",
                 "155452ocfe6l68t"
             ]
         },
         {
-            "id":"collection2",
-            "name":"Comfy Rev 2",
-            "items":[
+            "id": "collection2",
+            "name": "Comfy Rev 2",
+            "items": [
                 "3p7z5g2lbq92m13"
             ]
         }
     ],
-    "items":[
+    "items": [
         {
-            "id":"4ax9phi9m75dx2w",
-            "name":"Comfy Rev 1 - Acid T",
-            "price":45,
-            "material":"cotton",
-            "mainImage":"/Products/shirts/comfy_v1.jpeg",
+            "id": "4ax9phi9m75dx2w",
+            "name": "Comfy Rev 1 - Acid T",
+            "price": 45,
+            "material": "cotton",
+            "mainImage": "/Products/shirts/comfy_v1.jpeg",
             "description": "The Comfy Rev 1 Acid T was crafted with a sleek, minimalist design. One of Malik's frustrations with current brand trends is their inability to align with his unique aesthetic. This piece embodies the concept of being one-of-a-kind—symbolizing individuality that cannot be replicated. Made with premium fabric and top-tier printing, it’s a perfect blend of style and quality.",
-            "images":[
+            "images": [
                 "/Products/shirts/comfy_v1.jpeg",
-                "/models/rev1_acid/model1.webp",
-                "/models/rev1_acid/model2.webp",
-                "/models/rev1_acid/model3.webp",
-                "/models/rev1_acid/model4.webp"
-            ], 
-            "t style":"acid wash",
+                "/models/rev1_acid/DSC00330.JPG",
+                "/models/rev1_acid/DSC00406.JPG",
+                "/models/rev1_acid/DSC00358.JPG",
+                "/models/rev1_acid/DSC00335.JPG"
+            ],
+            "t style": "acid wash",
             "colors": [
                 {
-                    "color":"black",
-                    "#hex":"#000000",
-                    "image":"/Products/shirts/comfy_v1.jpeg"
+                    "color": "black",
+                    "#hex": "#000000",
+                    "image": "/Products/shirts/comfy_v1.jpeg"
                 },
                 {
-                    "color":"pink",
-                    "#hex":"#FFC0CB",
-                    "image":"/Products/shirts/comfy_v1_pink.jpeg"
+                    "color": "pink",
+                    "#hex": "#FFC0CB",
+                    "image": "/Products/shirts/comfy_v1_pink.jpeg"
                 }
             ],
-            "category":"T-shirts"
+            "category": "T-shirts"
         },
-         {
-            "id":"155452ocfe6l68t",
-            "name":"Comfy Rev 1 Hoodie",
-            "price":65,
-            "material":"cotton",
-            "mainImage":"/hoodies/comfy_v1.png",
-            "images":[
-                "/hoodies/comfy_v1.png"
+        {
+            "id": "155452ocfe6l68t",
+            "name": "Comfy Rev 1 Hoodie",
+            "price": 50,
+            "material": "cotton",
+            "mainImage": "/hoodies/comfy_v1.png",
+            "images": [
+                "/hoodies/comfy_v1.png", 
+                "/models/rev1_hoodie/DSC00392.JPG",
+                "/models/rev1_hoodie/DSC00307.JPG",
+                "/models/rev1_hoodie/DSC00312.JPG"
             ],
-            "description":"The Comfy One of One Hoodie represents more than just clothing—it’s a statement. Designed with a clean, timeless aesthetic, it reflects Malik’s vision of standing apart from fast-moving trends that fail to capture true individuality. Every detail, from its premium heavyweight fabric to its refined finish, was chosen to embody authenticity and originality. This piece isn’t made to blend in—it’s made to define your own lane.",
-            "t style":"acid wash",
+            "description": "The Comfy One of One Hoodie represents more than just clothing—it’s a statement. Designed with a clean, timeless aesthetic, it reflects Malik’s vision of standing apart from fast-moving trends that fail to capture true individuality. Every detail, from its premium heavyweight fabric to its refined finish, was chosen to embody authenticity and originality. This piece isn’t made to blend in—it’s made to define your own lane.",
+            "t style": "acid wash",
             "colors": [
-                
                 {
-                    "color":"pink",
-                    "#hex":"#FFC0CB",
-                    "image":"/hoodies/comfy_hoodie_v1.png"
+                    "color": "black",
+                    "hex": "#000000"
                 },
                 {
-                    "color":"royal blue",
-                    "#hex":"#6cc0ff",
-                    "image":"/Products/shirts/comfy_v1_royal_blue.jpeg"
-                },{
-                    "color":"black",
-                    "#hex":"#000000",
-                    "image":"/hoodies/comfy_hoodie_v1.png"
+                    "color": "royal blue",
+                    "hex": "#4169E1"
+                },
+                {
+                    "color": "pink",
+                    "hex": "#ffc0cb"
+                },
+                {
+                    "color": "grey",
+                    "hex": "#444444"
+                },
+                {
+                    "color": "red",
+                    "hex": "#f44336"
                 }
             ],
-            "category":"T-shirts"
+            "category": "T-shirts"
         },
-       {
-            "id":"3p7z5g2lbq92m13",
-            "name":"Comfy Rev 2 - T",
-            "price":50,
-            "material":"cotton",
-            "mainImage":"/Products/shirts/comfy-rev2t.png",
-            "images":[
+        {
+            "id": "3p7z5g2lbq92m13",
+            "name": "Comfy Rev 2 - T",
+            "price": 50,
+            "material": "cotton",
+            "mainImage": "/Products/shirts/comfy-rev2t.png",
+            "images": [
                 "/Products/shirts/comfy-rev2t.png",
-                "/models/rev2/model-rev2-1.jpeg"
+                "/models/rev2/DSC00343 (1).JPG",
+                "/models/rev2/DSC00341.JPG",
+                "/models/rev2/DSC00399.JPG",
+                "/models/rev2/DSC00404.JPG"
             ],
-            "description":"",
-            "t style":"basic",
+            "description": "",
+            "t style": "basic",
             "colors": [
                 {
-                    "color":"black",
-                    "#hex":"#000000",
-                    "image":"/Products/shirts/comfy_v1.jpeg"
+                    "color": "black",
+                    "#hex": "#000000",
+                    "image": "/Products/shirts/comfy_v1.jpeg"
                 },
                 {
-                    "color":"white",
-                    "#hex":"#FFFFF",
-                    "image":"/Products/shirts/comfy_v1_pink.jpeg"
-                } 
+                    "color": "white",
+                    "#hex": "#FFFFF",
+                    "image": "/Products/shirts/comfy_v1_pink.jpeg"
+                }
             ],
-            "category":"T-shirts"
-        } 
+            "category": "T-shirts"
+        }
     ]
 }
-
-
-
-
-
-
